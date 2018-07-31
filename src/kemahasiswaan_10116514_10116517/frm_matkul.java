@@ -119,12 +119,21 @@ Object tabel;
         nomk.setEnabled(true);
     }
     
+    public void aktif_semua(){
+        plus.setEnabled(true);
+        change.setEnabled(true);
+        erase.setEnabled(true);
+        save.setEnabled(true);
+        cancel.setEnabled(true);
+        out.setEnabled(true);
+    }
+    
     int row = 0;
     public void tampil_field()
     {
         row = tabel_matkul.getSelectedRow();
-        namk.setText(table_model_matkul.getValueAt(row, 0).toString());
-        nomk.setText(table_model_matkul.getValueAt(row, 1).toString());
+        nomk.setText(table_model_matkul.getValueAt(row, 0).toString());
+        namk.setText(table_model_matkul.getValueAt(row, 1).toString());
       
         save.setEnabled(false);
         change.setEnabled(true);
@@ -408,7 +417,7 @@ Object tabel;
                     );
             }
         }
-      
+        aktif_semua();
     }//GEN-LAST:event_saveActionPerformed
 
     private void eraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eraseActionPerformed
@@ -458,7 +467,7 @@ Object tabel;
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(database,user,pass);
                 Statement stt = kon.createStatement();
-                String SQL = "UPDATE 'mata_kuliah' SET 'nomor_mk'='"+no_mk+"','nama_mk'='"+nama_mk+"' WHERE 'nomor_mk'='"+table_model_matkul.getValueAt(row, 0).toString()+"';";
+                String SQL = "UPDATE `mata_kuliah` SET `nomor_mk`='"+no_mk+"',`nama_mk`='"+nama_mk+"' WHERE `nomor_mk`='"+table_model_matkul.getValueAt(row, 0).toString()+"';";
                 stt.executeUpdate(SQL);
                 data[0] = no_mk;
                 data[1] = nama_mk;

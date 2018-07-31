@@ -17,7 +17,7 @@ public class kemahasiswaan_10116514_10116517 {
     public static void main(String[] args) {
         // TODO code application logic here
        frm_matkul matakuliah = new frm_matkul();
-        matakuliah.setVisible(true);
+       matakuliah.setVisible(true);
         
         //frm_mhs mhs = new frm_mhs();
         //mhs.setVisible(true);

@@ -425,7 +425,7 @@ Object tabel;
         // TODO add your handling code here:
         String nim=tempat_nim.getText();
         String nama=tempat_nama.getText();
-        String tempat_lahiir=tempat_lahir.getText();
+        String tempat_lahiir = tempat_lahir.getText();
         String tanggal_lahir=tempat_tgl.getText();
         String alamat=tempat_alamat.getText();
         
@@ -441,14 +441,14 @@ Object tabel;
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(database,user,pass);
                 Statement stt = kon.createStatement();
-                String SQL = "UPDATE 't_mahasiswa'"
-                        + "SET 'nim'='"+nim+"',"
-                        + "'nama'='"+nama+"',"
-                        + "'ttl'='"+tempat_lahiir+"',"
-                        + "'tgl_lahir'='"+tanggal_lahir+"',"
-                        + "'alamat'='"+alamat+"' "
+                String SQL = "UPDATE `t_mahasiswa`"
+                        + "SET `nim`='"+nim+"',"
+                        + "`nama`='"+nama+"',"
+                        + "`tempat_lahir`='"+tempat_lahiir+"',"
+                        + "`tgl_lahir`='"+tanggal_lahir+"',"
+                        + "`alamat`='"+alamat+"' "
                     + "WHERE "
-                    + "'nim'='"+tableModel.getValueAt(row, 0).toString()+"';";
+                    + "`nim`='"+tableModel.getValueAt(row, 0).toString()+"';";
                 stt.executeUpdate(SQL);
                 data[0] = nim;
                 data[1] = nama;

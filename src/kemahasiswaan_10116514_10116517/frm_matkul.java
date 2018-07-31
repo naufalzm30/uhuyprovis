@@ -214,6 +214,11 @@ Object tabel;
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabel_matkul.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabel_matkulMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabel_matkul);
 
         plus.setText("TAMBAH");
@@ -224,8 +229,18 @@ Object tabel;
         });
 
         change.setText("UBAH");
+        change.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeActionPerformed(evt);
+            }
+        });
 
         erase.setText("HAPUS");
+        erase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eraseActionPerformed(evt);
+            }
+        });
 
         save.setText("SIMPAN");
         save.addActionListener(new java.awt.event.ActionListener() {
@@ -235,8 +250,18 @@ Object tabel;
         });
 
         cancel.setText("BATAL");
+        cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelActionPerformed(evt);
+            }
+        });
 
         out.setText("KELUAR");
+        out.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                outActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -385,6 +410,90 @@ Object tabel;
         }
       
     }//GEN-LAST:event_saveActionPerformed
+
+    private void eraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eraseActionPerformed
+        // TODO add your handling code here:
+         try 
+        {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database,user,pass);
+            Statement stt = kon.createStatement();
+            String SQL = "Delete From mata_kuliah "
+                            + "WHERE "
+                          + "nomor_mk='"+table_model_matkul.getValueAt(row, 0).toString()+"'";
+            stt.executeUpdate(SQL);
+            table_model_matkul.removeRow(row);
+            stt.close();
+            kon.close();
+            membersihkan_teks();
+        } 
+        catch (Exception ex) 
+        {
+            System.err.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_eraseActionPerformed
+
+    private void tabel_matkulMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabel_matkulMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount()==1){
+            tampil_field();
+        }
+    }//GEN-LAST:event_tabel_matkulMouseClicked
+
+    private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
+        // TODO add your handling code here:
+        String no_mk = nomk.getText();
+        String nama_mk=namk.getText();
+
+        
+        if ((no_mk.isEmpty()) | (nama_mk.isEmpty()))
+        {
+            JOptionPane.showMessageDialog(null,"data tidak boleh kosong, silahkan dilengkapi");
+            nomk.requestFocus();
+        }
+        else
+        {
+            try 
+            {
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(database,user,pass);
+                Statement stt = kon.createStatement();
+                String SQL = "UPDATE 'mata_kuliah' SET 'nomor_mk'='"+no_mk+"','nama_mk'='"+nama_mk+"' WHERE 'nomor_mk'='"+table_model_matkul.getValueAt(row, 0).toString()+"';";
+                stt.executeUpdate(SQL);
+                data[0] = no_mk;
+                data[1] = nama_mk;
+                
+                table_model_matkul.removeRow(row);
+                table_model_matkul.insertRow(row, data);
+                
+                stt.close();
+                kon.close();
+                membersihkan_teks();
+                save.setEnabled(false);
+                nonaktifkan_teks();
+            } 
+            catch (Exception ex) 
+            {
+                System.err.println(ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_changeActionPerformed
+
+    private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
+        // TODO add your handling code here
+        plus.setEnabled(true);
+        change.setEnabled(true);
+        erase.setEnabled(true);
+        save.setEnabled(true);
+        cancel.setEnabled(true);
+        out.setEnabled(true);
+        membersihkan_teks();
+    }//GEN-LAST:event_cancelActionPerformed
+
+    private void outActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_outActionPerformed
 
     /**
      * @param args the command line arguments

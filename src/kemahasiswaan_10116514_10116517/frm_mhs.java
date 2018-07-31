@@ -120,7 +120,7 @@ Object tabel;
     public void aktif_teks()
     {
         tempat_nim.setEnabled(true);
-        tempat_nama.setEnabled(true);;
+        tempat_nama.setEnabled(true);
         tempat_tgl.setEnabled(true);
         tempat_lahir.setEnabled(true);
         tempat_alamat.setEnabled(true);
@@ -352,6 +352,7 @@ Object tabel;
         change.setEnabled(false);
         delete.setEnabled(false);
         out.setEnabled(false);
+        add.setEnabled(false);
         aktif_teks();
     }//GEN-LAST:event_addActionPerformed
 
@@ -441,14 +442,14 @@ Object tabel;
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(database,user,pass);
                 Statement stt = kon.createStatement();
-                String SQL = "UPDATE 't_mahasiswa'"
-                        + "SET 'nim'='"+nim+"',"
-                        + "'nama'='"+nama+"',"
-                        + "'ttl'='"+tempat_lahiir+"',"
-                        + "'tgl_lahir'='"+tanggal_lahir+"',"
-                        + "'alamat'='"+alamat+"' "
+                String SQL = "UPDATE `t_mahasiswa`"
+                        + "SET `nim`='"+nim+"',"
+                        + "`nama`='"+nama+"',"
+                        + "`tempat_lahir`='"+tempat_lahiir+"',"
+                        + "`tgl_lahir`='"+tanggal_lahir+"',"
+                        + "`alamat`='"+alamat+"' "
                     + "WHERE "
-                    + "'nim'='"+tableModel.getValueAt(row, 0).toString()+"';";
+                    + "`nim`='"+tableModel.getValueAt(row, 0).toString()+"';";
                 stt.executeUpdate(SQL);
                 data[0] = nim;
                 data[1] = nama;

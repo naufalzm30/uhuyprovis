@@ -1,16 +1,17 @@
 package kemahasiswaan_10116514_10116517;
+
 import javax.swing.*;
 //Fungsi import untuk SQL
 import java.sql.*;
 //Fungsi import untuk tanggal
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 
 /**
  *
@@ -19,107 +20,95 @@ import java.util.Date;
 public class frm_matkul extends javax.swing.JFrame {
 
     koneksi dbsetting;
-String driver,database,user,pass;
-Object tabel;
-    
-    
+    String driver, database, user, pass;
+    Object tabel;
+
     /**
      * Creates new form frm_matkul
      */
     public frm_matkul() {
         initComponents();
-        
+
         dbsetting = new koneksi();
         driver = dbsetting.SettingPanel("DBDriver");
         database = dbsetting.SettingPanel("DBDatabase");
         user = dbsetting.SettingPanel("DBUsername");
         pass = dbsetting.SettingPanel("DBPassword");
         tabel_matkul.setModel(table_model_matkul);
-        
+
         settableload();
     }
-    
-     
-    private javax.swing.table.DefaultTableModel table_model_matkul=getDefaultTableModel();
-    private javax.swing.table.DefaultTableModel getDefaultTableModel()
-    {
-     //membuat judul header
-     return new javax.swing.table.DefaultTableModel
-     (
-          new Object [] [] {},
-          new String [] {"No M.K",
-                         "Nama M.K"
-                         }
-     )
-     // disable perubahan pada grid
-     {
-         boolean[] canEdit = new boolean[]
-         {
-             false, false
-         };
-         
-         public boolean isCellEditable(int rowIndex, int columnIndex)
-         {
-             return canEdit[columnIndex];
-         }
-     };
-        
+
+    private javax.swing.table.DefaultTableModel table_model_matkul = getDefaultTableModel();
+
+    private javax.swing.table.DefaultTableModel getDefaultTableModel() {
+        //membuat judul header
+        return new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{"No M.K",
+                    "Nama M.K"
+                }
+        ) // disable perubahan pada grid
+        {
+            boolean[] canEdit = new boolean[]{
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
+
     }
     String data[] = new String[2];
- private void settableload()
-    {
+    String indeks;
+
+    private void settableload() {
         String stat = "";
-        try
-        {
+        try {
             Class.forName(driver);
-            Connection kon = DriverManager.getConnection(database,user,pass);
-            
-             
-            Statement stt=kon.createStatement();
+            Connection kon = DriverManager.getConnection(database, user, pass);
+
+            Statement stt = kon.createStatement();
             String SQL = "select * from mata_kuliah order by nomor_mk asc";
             ResultSet res = stt.executeQuery(SQL);
-            while (res.next())
-            {
+
+            while (res.next()) {
                 data[0] = res.getString(1);
                 data[1] = res.getString(2);
-                
                 table_model_matkul.addRow(data);
             }
             res.close();
             stt.close();
             kon.close();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             System.err.println(ex.getMessage());
-            JOptionPane.showMessageDialog(null, ex.getMessage(),"Error",JOptionPane.INFORMATION_MESSAGE);
-            
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+
             System.exit(0);
         }
     }
- 
- 
-    public void membersihkan_teks()
-    {
+
+    public void membersihkan_teks() {
         cari.setText("");
         namk.setText("");
         nomk.setText("");
-            
+
     }
-    public void nonaktifkan_teks()
-    {
+
+    public void nonaktifkan_teks() {
         cari.setEnabled(false);
         namk.setEnabled(false);;
         nomk.setEnabled(false);
     }
-    public void aktif_teks()
-    {
+
+    public void aktif_teks() {
         cari.setEnabled(true);
         namk.setEnabled(true);;
         nomk.setEnabled(true);
     }
-    
-    public void aktif_semua(){
+
+    public void aktif_semua() {
         plus.setEnabled(true);
         change.setEnabled(true);
         erase.setEnabled(true);
@@ -127,22 +116,21 @@ Object tabel;
         cancel.setEnabled(true);
         out.setEnabled(true);
     }
-    
+
     int row = 0;
-    public void tampil_field()
-    {
+
+    public void tampil_field() {
         row = tabel_matkul.getSelectedRow();
         nomk.setText(table_model_matkul.getValueAt(row, 0).toString());
         namk.setText(table_model_matkul.getValueAt(row, 1).toString());
-      
+
         save.setEnabled(false);
         change.setEnabled(true);
         erase.setEnabled(true);
         cancel.setEnabled(false);
         aktif_teks();
     }
- 
- 
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -360,8 +348,8 @@ Object tabel;
 
     private void plusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plusActionPerformed
         // TODO add your handling code here:
-         plus.setEnabled(false);
-         membersihkan_teks();
+        plus.setEnabled(false);
+        membersihkan_teks();
         nomk.requestFocus();
         save.setEnabled(true);
         change.setEnabled(false);
@@ -372,49 +360,41 @@ Object tabel;
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         // TODO add your handling code here:
-       
-         String data[]=new String[5];
-        
-        if ((namk.getText().isEmpty()) || (nomk.getText().isEmpty())) 
-        {
+
+        String data[] = new String[5];
+
+        if ((namk.getText().isEmpty()) || (nomk.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             namk.requestFocus();
-        }
-        else if((nomk.getText().isEmpty()))
-        {
+        } else if ((nomk.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             nomk.requestFocus();
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(
-                                    database,
-                                    user,
-                                    pass);
+                        database,
+                        user,
+                        pass);
                 Statement stt = kon.createStatement();
                 String SQL = "INSERT INTO mata_kuliah("
-                             + "nomor_mk,"
-                             + "nama_mk)"+
-                               " VALUES ( '"+nomk.getText()+"',"+"'"+namk.getText()+"')";
+                        + "nomor_mk,"
+                        + "nama_mk)"
+                        + " VALUES ( '" + nomk.getText() + "'," + "'" + namk.getText() + "')";
                 stt.executeUpdate(SQL);
                 data[0] = nomk.getText();
-                data[1] = namk.getText();                
+                data[1] = namk.getText();
                 table_model_matkul.insertRow(0, data);
                 stt.close();
                 kon.close();
                 membersihkan_teks();
                 save.setEnabled(false);
                 nonaktifkan_teks();
-            }
-            catch(Exception ex)
-            {
-                JOptionPane.showMessageDialog(null, 
-                    ex.getMessage(),"Error",
-                    JOptionPane.INFORMATION_MESSAGE
-                    );
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null,
+                        ex.getMessage(), "Error",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
             }
         }
         aktif_semua();
@@ -422,29 +402,26 @@ Object tabel;
 
     private void eraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eraseActionPerformed
         // TODO add your handling code here:
-         try 
-        {
+        try {
             Class.forName(driver);
-            Connection kon = DriverManager.getConnection(database,user,pass);
+            Connection kon = DriverManager.getConnection(database, user, pass);
             Statement stt = kon.createStatement();
             String SQL = "Delete From mata_kuliah "
-                            + "WHERE "
-                          + "nomor_mk='"+table_model_matkul.getValueAt(row, 0).toString()+"'";
+                    + "WHERE "
+                    + "nomor_mk='" + table_model_matkul.getValueAt(row, 0).toString() + "'";
             stt.executeUpdate(SQL);
             table_model_matkul.removeRow(row);
             stt.close();
             kon.close();
             membersihkan_teks();
-        } 
-        catch (Exception ex) 
-        {
+        } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }
     }//GEN-LAST:event_eraseActionPerformed
 
     private void tabel_matkulMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabel_matkulMouseClicked
         // TODO add your handling code here:
-        if (evt.getClickCount()==1){
+        if (evt.getClickCount() == 1) {
             tampil_field();
         }
     }//GEN-LAST:event_tabel_matkulMouseClicked
@@ -452,37 +429,30 @@ Object tabel;
     private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
         // TODO add your handling code here:
         String no_mk = nomk.getText();
-        String nama_mk=namk.getText();
+        String nama_mk = namk.getText();
 
-        
-        if ((no_mk.isEmpty()) | (nama_mk.isEmpty()))
-        {
-            JOptionPane.showMessageDialog(null,"data tidak boleh kosong, silahkan dilengkapi");
+        if ((no_mk.isEmpty()) | (nama_mk.isEmpty())) {
+            JOptionPane.showMessageDialog(null, "data tidak boleh kosong, silahkan dilengkapi");
             nomk.requestFocus();
-        }
-        else
-        {
-            try 
-            {
+        } else {
+            try {
                 Class.forName(driver);
-                Connection kon = DriverManager.getConnection(database,user,pass);
+                Connection kon = DriverManager.getConnection(database, user, pass);
                 Statement stt = kon.createStatement();
-                String SQL = "UPDATE `mata_kuliah` SET `nomor_mk`='"+no_mk+"',`nama_mk`='"+nama_mk+"' WHERE `nomor_mk`='"+table_model_matkul.getValueAt(row, 0).toString()+"';";
+                String SQL = "UPDATE `mata_kuliah` SET `nomor_mk`='" + no_mk + "',`nama_mk`='" + nama_mk + "' WHERE `nomor_mk`='" + table_model_matkul.getValueAt(row, 0).toString() + "';";
                 stt.executeUpdate(SQL);
                 data[0] = no_mk;
                 data[1] = nama_mk;
-                
+
                 table_model_matkul.removeRow(row);
                 table_model_matkul.insertRow(row, data);
-                
+
                 stt.close();
                 kon.close();
                 membersihkan_teks();
                 save.setEnabled(false);
                 nonaktifkan_teks();
-            } 
-            catch (Exception ex) 
-            {
+            } catch (Exception ex) {
                 System.err.println(ex.getMessage());
             }
         }

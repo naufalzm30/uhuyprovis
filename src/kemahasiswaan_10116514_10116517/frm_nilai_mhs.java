@@ -1,18 +1,22 @@
 package kemahasiswaan_10116514_10116517;
+
 import javax.swing.*;
 //Fungsi import untuk SQL
 import java.sql.*;
 //Fungsi import untuk tanggal
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 /**
  *
  * @author ACER PC
  */
 public class frm_nilai_mhs extends javax.swing.JFrame {
-koneksi dbsetting;
-String driver,database,user,pass;
-Object tabel;
+
+    koneksi dbsetting;
+    String driver, database, user, pass;
+    Object tabel;
+
     /**
      * Creates new form frm_nilai_mhs
      */
@@ -26,73 +30,122 @@ Object tabel;
         tabel_nilai_mhs.setModel(table_model_nilai_mhs);
         settableload();
     }
-     private javax.swing.table.DefaultTableModel table_model_nilai_mhs=getDefaultTableModel();
-    private javax.swing.table.DefaultTableModel getDefaultTableModel()
-    {
-     //membuat judul header
-     return new javax.swing.table.DefaultTableModel
-     (
-          new Object [] [] {},
-          new String [] {"Nama",
-                         "Nama M.K",
-                         "Absensi",
-                         "Tgs 1",
-                         "Tgs 2",
-                         "Tgs 2",
-                         "UTS",
-                         "UAS",
-                         "Nilai Absen",
-                         "Nilai tugas",
-                         "Nilai UAS",
-                         "Nilai Akhir",
-                         "Index",
-                         "Keterangan"
-                         }
-     )
-     // disable perubahan pada grid
-     {
-         boolean[] canEdit = new boolean[]
-         {
-             false, false
-         };
-         
-         public boolean isCellEditable(int rowIndex, int columnIndex)
-         {
-             return canEdit[columnIndex];
-         }
-     };
-        
-    }
-     String data[] = new String[5];
-    private void settableload()
-    {
-        String stat = "";
-        try
+    private javax.swing.table.DefaultTableModel table_model_nilai_mhs = getDefaultTableModel();
+
+    private javax.swing.table.DefaultTableModel getDefaultTableModel() {
+        //membuat judul header
+        return new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Nama",
+                    "Nama M.K",
+                    "Absensi",
+                    "Tgs 1",
+                    "Tgs 2",
+                    "Tgs 2",
+                    "UTS",
+                    "UAS",
+                    "Nilai Absen",
+                    "Nilai tugas",
+                    "Nilai UTS",
+                    "Nilai UAS",
+                    "Nilai Akhir",
+                    "Index",
+                    "Keterangan"
+                }
+        ) // disable perubahan pada grid
         {
+            boolean[] canEdit = new boolean[]{
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
+
+    }
+    double nilai_absen;
+    String nilaiabsen;
+    double nilai_tugas;
+    String nilaitugas;
+    double nilai_uts;
+    String nilaiuts;
+    double nilai_uas;
+    String nilaiuas;
+    double nilai_akhir;
+    String nilaiakhir;
+    String index;
+    String ket;
+    String data[] = new String[15];
+
+    private void settableload() {
+        String stat = "";
+        try {
             Class.forName(driver);
-            Connection kon = DriverManager.getConnection(database,user,pass);
-            
-            Statement stt=kon.createStatement();
-            String SQL = "select * from nilai";
+            Connection kon = DriverManager.getConnection(database, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select * from nilai_ini";
             ResultSet res = stt.executeQuery(SQL);
-            while (res.next())
-            {
-                data[0] = res.getString(1);
-                data[1] = res.getString(2);
-                data[2] = res.getString(3);
-                data[3] = res.getString(4);
-                data[4] = res.getString(5);
+
+            while (res.next()) {
+                nilai_absen = ((((res.getDouble(4) / 14) * 100) * 5) / 100);
+                nilaiabsen = String.valueOf(nilai_absen);
+                nilai_tugas = (((res.getInt(5) + res.getInt(6) + res.getInt(7)) / 3) * 25) / 100;
+                nilaitugas = String.valueOf(nilai_tugas);
+                nilai_uts = (res.getInt(8) * 30) / 100;
+                nilaiuts = String.valueOf(nilai_uts);
+                nilai_uas = (res.getInt(9) * 40) / 100;
+                nilaiuas = String.valueOf(nilai_uas);
+                nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
+                nilaiakhir = String.valueOf(nilai_akhir);
+                
+                    if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
+                        index = "A";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
+                        index = "B";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
+                        index = "C";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
+                        index="D";
+                        ket="Tidak Lulus";
+                    } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
+                        index="E";
+                        ket="Tidak lulus";
+                    }
+                    
+                    if (res.getInt(4)<11) {
+                    ket="Tidak Lulus";
+                }
+                
+
+                data[0] = res.getString(2);
+                data[1] = res.getString(3);
+                data[2] = res.getString(4);
+                data[3] = res.getString(5);
+                data[4] = res.getString(6);
+                data[5] = res.getString(7);
+                data[6] = res.getString(8);
+                data[7] = res.getString(9);
+                data[8] = nilaiabsen;
+                data[9] = nilaitugas;
+                data[10] = nilaiuts;
+                data[11] = nilaiuas;
+                data[12] = nilaiakhir;
+                data[13] = index;
+                data[14] = ket;
                 table_model_nilai_mhs.addRow(data);
             }
             res.close();
             stt.close();
             kon.close();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             System.err.println(ex.getMessage());
-            JOptionPane.showMessageDialog(null, ex.getMessage(),"Error",JOptionPane.INFORMATION_MESSAGE);
-            
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+
             System.exit(0);
         }
     }

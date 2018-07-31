@@ -628,6 +628,10 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         String tugas_2 = tempat_tugas2.getText();
         String tugas_3 = tempat_tugas3.getText();
         String uts = tempat_uts.getText();
+        String uas = tempat_uas.getText();
+        String angkatan = tempat_ang.getText();
+        
+        
     }//GEN-LAST:event_changeActionPerformed
 
     /**

@@ -29,6 +29,9 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         pass = dbsetting.SettingPanel("DBPassword");
         tabel_nilai_mhs.setModel(table_model_nilai_mhs);
         settableload();
+        
+        tampilkombonama();
+        tampilkombomatkul();
     }
     private javax.swing.table.DefaultTableModel table_model_nilai_mhs = getDefaultTableModel();
 
@@ -150,6 +153,106 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         }
     }
 
+    
+    private void tampilkombonama() {
+        String stat = "";
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select nama from t_mahasiswa order by nim asc";
+            ResultSet res = stt.executeQuery(SQL);
+
+            while (res.next()) {
+                data[0] = res.getString(1);
+                kombo_nama.addItem(data[0]);
+            }
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+
+            System.exit(0);
+        }
+    }
+    
+    private void setkombonama() {
+        String stat = "";
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select nim from t_mahasiswa where nama='"+kombo_nama.getSelectedItem()+"' order by nim asc";
+            ResultSet res = stt.executeQuery(SQL);
+
+            while (res.next()) {
+                data[0] = res.getString(1);
+                tempat_nim.setText(data[0]);
+            }
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+
+            System.exit(0);
+        }
+    }
+    
+    private void tampilkombomatkul() {
+        String stat = "";
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select nama_mk from mata_kuliah order by nomor_mk asc";
+            ResultSet res = stt.executeQuery(SQL);
+
+            while (res.next()) {
+                data[0] = res.getString(1);
+                kombo_matkul.addItem(data[0]);
+            }
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+
+            System.exit(0);
+        }
+    }
+    
+    private void setkombomatkul() {
+        String stat = "";
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select nomor_mk from mata_kuliah where nama_mk='"+kombo_matkul.getSelectedItem()+"' order by nomor_mk asc";
+            ResultSet res = stt.executeQuery(SQL);
+
+            while (res.next()) {
+                data[0] = res.getString(1);
+                tempat_kmk.setText(data[0]);
+            }
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+
+            System.exit(0);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -245,6 +348,15 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
 
         jLabel9.setText("Tugas 3");
 
+        tempat_nim.setEditable(false);
+
+        kombo_nama.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Pilih Nama--" }));
+        kombo_nama.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kombo_namaActionPerformed(evt);
+            }
+        });
+
         tempat_hadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tempat_hadirActionPerformed(evt);
@@ -255,6 +367,13 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
 
         jLabel11.setText("Nama Mata Kuliah");
 
+        kombo_matkul.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Pilih Matkul--" }));
+        kombo_matkul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kombo_matkulActionPerformed(evt);
+            }
+        });
+
         jLabel12.setText("Kode M.K");
 
         jLabel13.setText("UTS");
@@ -263,6 +382,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
 
         jLabel15.setText("Angkatan");
 
+        tempat_kmk.setEditable(false);
         tempat_kmk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tempat_kmkActionPerformed(evt);
@@ -300,6 +420,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         delete.setText("HAPUS");
 
         save.setText("SIMPAN");
+        save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveActionPerformed(evt);
+            }
+        });
 
         cancel.setText("BATAL");
 
@@ -465,6 +590,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_addActionPerformed
 
     private void tempat_hadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempat_hadirActionPerformed
@@ -474,6 +600,21 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
     private void tempat_kmkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempat_kmkActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tempat_kmkActionPerformed
+
+    private void kombo_namaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kombo_namaActionPerformed
+        // TODO add your handling code here:
+        setkombonama();
+    }//GEN-LAST:event_kombo_namaActionPerformed
+
+    private void kombo_matkulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kombo_matkulActionPerformed
+        // TODO add your handling code here:
+        setkombomatkul();
+    }//GEN-LAST:event_kombo_matkulActionPerformed
+
+    private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_saveActionPerformed
 
     /**
      * @param args the command line arguments

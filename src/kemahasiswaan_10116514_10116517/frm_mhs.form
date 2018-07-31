@@ -335,7 +335,7 @@
                       <Component id="searching" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="display" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="21" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

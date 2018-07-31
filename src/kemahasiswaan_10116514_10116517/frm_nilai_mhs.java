@@ -416,6 +416,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         });
 
         change.setText("UBAH");
+        change.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeActionPerformed(evt);
+            }
+        });
 
         delete.setText("HAPUS");
 
@@ -615,6 +620,15 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_saveActionPerformed
+
+    private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
+        // TODO add your handling code here:
+        String kehadiran = tempat_hadir.getText();
+        String tugas_1 = tempat_tugas1.getText();
+        String tugas_2 = tempat_tugas2.getText();
+        String tugas_3 = tempat_tugas3.getText();
+        String uts = tempat_uts.getText();
+    }//GEN-LAST:event_changeActionPerformed
 
     /**
      * @param args the command line arguments

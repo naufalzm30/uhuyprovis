@@ -426,7 +426,7 @@ Object tabel;
         // TODO add your handling code here:
         String nim=tempat_nim.getText();
         String nama=tempat_nama.getText();
-        String tempat_lahiir=tempat_lahir.getText();
+        String tempat_lahiir = tempat_lahir.getText();
         String tanggal_lahir=tempat_tgl.getText();
         String alamat=tempat_alamat.getText();
         

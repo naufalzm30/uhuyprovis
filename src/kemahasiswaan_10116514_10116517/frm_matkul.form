@@ -57,7 +57,7 @@
                           </Group>
                           <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="add" pref="83" max="32767" attributes="0"/>
+                              <Component id="plus" pref="83" max="32767" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="change" min="-2" pref="82" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -112,7 +112,7 @@
                           <Component id="save" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="erase" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="change" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="add" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="plus" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
@@ -233,12 +233,12 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="add">
+    <Component class="javax.swing.JButton" name="plus">
       <Properties>
         <Property name="text" type="java.lang.String" value="TAMBAH"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="plusActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="change">

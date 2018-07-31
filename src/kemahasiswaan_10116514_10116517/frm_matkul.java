@@ -156,7 +156,7 @@ Object tabel;
         namk = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabel_matkul = new javax.swing.JTable();
-        add = new javax.swing.JButton();
+        plus = new javax.swing.JButton();
         change = new javax.swing.JButton();
         erase = new javax.swing.JButton();
         save = new javax.swing.JButton();
@@ -216,10 +216,10 @@ Object tabel;
         ));
         jScrollPane1.setViewportView(tabel_matkul);
 
-        add.setText("TAMBAH");
-        add.addActionListener(new java.awt.event.ActionListener() {
+        plus.setText("TAMBAH");
+        plus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addActionPerformed(evt);
+                plusActionPerformed(evt);
             }
         });
 
@@ -271,7 +271,7 @@ Object tabel;
                                 .addComponent(namk))
                             .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(add, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+                                .addComponent(plus, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
                                 .addComponent(change, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -317,16 +317,16 @@ Object tabel;
                             .addComponent(save)
                             .addComponent(erase)
                             .addComponent(change)
-                            .addComponent(add))
+                            .addComponent(plus))
                         .addGap(24, 24, 24))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+    private void plusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plusActionPerformed
         // TODO add your handling code here:
-         add.setEnabled(false);
+         plus.setEnabled(false);
          membersihkan_teks();
         nomk.requestFocus();
         save.setEnabled(true);
@@ -334,7 +334,7 @@ Object tabel;
         erase.setEnabled(false);
         out.setEnabled(false);
         aktif_teks();
-    }//GEN-LAST:event_addActionPerformed
+    }//GEN-LAST:event_plusActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         // TODO add your handling code here:
@@ -422,7 +422,6 @@ Object tabel;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton add;
     private javax.swing.JButton cancel;
     private javax.swing.JTextField cari;
     private javax.swing.JButton change;
@@ -439,6 +438,7 @@ Object tabel;
     private javax.swing.JTextField namk;
     private javax.swing.JTextField nomk;
     private javax.swing.JButton out;
+    private javax.swing.JButton plus;
     private javax.swing.JButton save;
     private javax.swing.JTable tabel_matkul;
     // End of variables declaration//GEN-END:variables

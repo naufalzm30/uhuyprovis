@@ -12,10 +12,22 @@ import java.util.Date;
  * @author ACER PC
  */
 public class frm_nilai_mhs extends javax.swing.JFrame {
-
+    
     koneksi dbsetting;
     String driver, database, user, pass;
     Object tabel;
+    double nilai_absen;
+    String nilaiabsen;
+    double nilai_tugas;
+    String nilaitugas;
+    double nilai_uts;
+    String nilaiuts;
+    double nilai_uas;
+    String nilaiuas;
+    double nilai_akhir;
+    String nilaiakhir;
+    String index;
+    String ket;
 
     /**
      * Creates new form frm_nilai_mhs
@@ -34,7 +46,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         tampilkombomatkul();
     }
     private javax.swing.table.DefaultTableModel table_model_nilai_mhs = getDefaultTableModel();
-
+    
     private javax.swing.table.DefaultTableModel getDefaultTableModel() {
         //membuat judul header
         return new javax.swing.table.DefaultTableModel(
@@ -60,37 +72,26 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
             boolean[] canEdit = new boolean[]{
                 false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
             };
-
+            
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
             }
         };
-
+        
     }
-    double nilai_absen;
-    String nilaiabsen;
-    double nilai_tugas;
-    String nilaitugas;
-    double nilai_uts;
-    String nilaiuts;
-    double nilai_uas;
-    String nilaiuas;
-    double nilai_akhir;
-    String nilaiakhir;
-    String index;
-    String ket;
+    
     String data[] = new String[15];
-
+    
     private void settableload() {
         String stat = "";
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
-
+            
             Statement stt = kon.createStatement();
             String SQL = "select * from nilai_ini";
             ResultSet res = stt.executeQuery(SQL);
-
+            
             while (res.next()) {
                 nilai_absen = ((((res.getDouble(4) / 14) * 100) * 5) / 100);
                 nilaiabsen = String.valueOf(nilai_absen);
@@ -103,28 +104,27 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                 nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
                 nilaiakhir = String.valueOf(nilai_akhir);
                 
-                    if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
-                        index = "A";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
-                        index = "B";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
-                        index = "C";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
-                        index="D";
-                        ket="Tidak Lulus";
-                    } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
-                        index="E";
-                        ket="Tidak lulus";
-                    }
-                    
-                    if (res.getInt(4)<11) {
-                    ket="Tidak Lulus";
+                if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
+                    index = "A";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
+                    index = "B";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
+                    index = "C";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
+                    index = "D";
+                    ket = "Tidak Lulus";
+                } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
+                    index = "E";
+                    ket = "Tidak lulus";
                 }
                 
-
+                if (res.getInt(4) < 11) {
+                    ket = "Tidak Lulus";
+                }
+                
                 data[0] = res.getString(2);
                 data[1] = res.getString(3);
                 data[2] = res.getString(4);
@@ -148,7 +148,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-
+            
             System.exit(0);
         }
     }
@@ -171,7 +171,8 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
     }
     
     int row = 0;
-    public void tampilkeun(){
+    
+    public void tampilkeun() {
         row = tabel_nilai_mhs.getSelectedRow();
         kombo_nama.setSelectedItem(table_model_nilai_mhs.getValueAt(row, 0).toString());
         kombo_matkul.setSelectedItem(table_model_nilai_mhs.getValueAt(row, 1).toString());
@@ -195,11 +196,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
-
+            
             Statement stt = kon.createStatement();
             String SQL = "select nama from t_mahasiswa order by nim asc";
             ResultSet res = stt.executeQuery(SQL);
-
+            
             while (res.next()) {
                 data[0] = res.getString(1);
                 kombo_nama.addItem(data[0]);
@@ -210,7 +211,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-
+            
             System.exit(0);
         }
     }
@@ -220,11 +221,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
-
+            
             Statement stt = kon.createStatement();
-            String SQL = "select nim from t_mahasiswa where nama='"+kombo_nama.getSelectedItem()+"' order by nim asc";
+            String SQL = "select nim from t_mahasiswa where nama='" + kombo_nama.getSelectedItem() + "' order by nim asc";
             ResultSet res = stt.executeQuery(SQL);
-
+            
             while (res.next()) {
                 data[0] = res.getString(1);
                 tempat_nim.setText(data[0]);
@@ -235,7 +236,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-
+            
             System.exit(0);
         }
     }
@@ -245,11 +246,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
-
+            
             Statement stt = kon.createStatement();
             String SQL = "select nama_mk from mata_kuliah order by nomor_mk asc";
             ResultSet res = stt.executeQuery(SQL);
-
+            
             while (res.next()) {
                 data[0] = res.getString(1);
                 kombo_matkul.addItem(data[0]);
@@ -260,7 +261,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-
+            
             System.exit(0);
         }
     }
@@ -270,11 +271,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
-
+            
             Statement stt = kon.createStatement();
-            String SQL = "select nomor_mk from mata_kuliah where nama_mk='"+kombo_matkul.getSelectedItem()+"' order by nomor_mk asc";
+            String SQL = "select nomor_mk from mata_kuliah where nama_mk='" + kombo_matkul.getSelectedItem() + "' order by nomor_mk asc";
             ResultSet res = stt.executeQuery(SQL);
-
+            
             while (res.next()) {
                 data[0] = res.getString(1);
                 tempat_kmk.setText(data[0]);
@@ -285,10 +286,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-
+            
             System.exit(0);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -723,18 +725,23 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
             tempat_nim.requestFocus();
         }
         
-        else
-        {
-            try
-            {
+        if (Integer.valueOf(tempat_hadir.getText()) < 11) {
+            ket = "Tidak Lulus";
+        }
+        
+        if ((tempat_nim.getText().isEmpty()) || (tempat_kmk.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_nim.requestFocus();
+        } else {
+            try {
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(
-                                    database,
-                                    user,
-                                    pass);
+                        database,
+                        user,
+                        pass);
                 Statement stt = kon.createStatement();
                 String SQL = "INSERT INTO nilai_ini(idnilai_ini,"
-                             + "nama,"
+                        + "nama,"
                         + "nama_mk,"
                         + "absensi,"
                         + "tugas1,"
@@ -745,23 +752,23 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                         + "nim,"
                         + "nomor_mk,"
                         + "angkatan)"
-                                + "VALUES "
-                            + "( NULL,"
-                            +  "'"+(String)kombo_nama.getSelectedItem()+"',"
-                            + "'"+(String)kombo_matkul.getSelectedItem()+"',"
-                            + "'"+Integer.valueOf(tempat_hadir.getText())+"',"
-                        + "'"+Integer.valueOf(tempat_tugas1.getText())+"',"
-                        + "'"+Integer.valueOf(tempat_tugas2.getText())+"',"
-                        + "'"+Integer.valueOf(tempat_tugas3.getText())+"',"
-                        + "'"+Integer.valueOf(tempat_uts.getText())+"',"
-                        + "'"+Integer.valueOf(tempat_uas.getText())+"',"
-                        + "'"+Integer.valueOf(tempat_nim.getText())+"',"
-                        + "'"+tempat_kmk.getText()+"',"
-                            + "'"+tempat_ang.getText()+"')";
+                        + "VALUES "
+                        + "( NULL,"
+                        + "'" + (String) kombo_nama.getSelectedItem() + "',"
+                        + "'" + (String) kombo_matkul.getSelectedItem() + "',"
+                        + "'" + Integer.valueOf(tempat_hadir.getText()) + "',"
+                        + "'" + Integer.valueOf(tempat_tugas1.getText()) + "',"
+                        + "'" + Integer.valueOf(tempat_tugas2.getText()) + "',"
+                        + "'" + Integer.valueOf(tempat_tugas3.getText()) + "',"
+                        + "'" + Integer.valueOf(tempat_uts.getText()) + "',"
+                        + "'" + Integer.valueOf(tempat_uas.getText()) + "',"
+                        + "'" + Integer.valueOf(tempat_nim.getText()) + "',"
+                        + "'" + tempat_kmk.getText() + "',"
+                        + "'" + tempat_ang.getText() + "')";
                 stt.executeUpdate(SQL);
                 
-                data[0] = (String)kombo_nama.getSelectedItem();
-                data[1] = (String)kombo_matkul.getSelectedItem();
+                data[0] = (String) kombo_nama.getSelectedItem();
+                data[1] = (String) kombo_matkul.getSelectedItem();
                 data[2] = tempat_hadir.getText();
                 data[3] = tempat_tugas1.getText();
                 data[4] = tempat_tugas2.getText();
@@ -781,13 +788,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                 
                 save.setEnabled(false);
                 
-            }
-            catch(Exception ex)
-            {
-                JOptionPane.showMessageDialog(null, 
-                    ex.getMessage(),"Error",
-                    JOptionPane.INFORMATION_MESSAGE
-                    );
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null,
+                        ex.getMessage(), "Error",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
             }
         }
     }//GEN-LAST:event_saveActionPerformed
@@ -795,26 +800,14 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
     private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
         // TODO add your handling code here:
         String data[] = new String[15];
-        String absensi = tempat_hadir.getText();
-        int nilai_absensi = Integer.parseInt(absensi);
-        String tugas_1 = tempat_tugas1.getText();
-        int nilai_tugas1 = Integer.parseInt(tugas_1);
-        String tugas_2 = tempat_tugas2.getText();
-        int nilai_tugas2 = Integer.parseInt(tugas_2);
-        String tugas_3 = tempat_tugas3.getText();
-        int nilai_tugas3 = Integer.parseInt(tugas_3);
-        String uts = tempat_uts.getText();
-        int nla_uts = Integer.parseInt(uts);
-        String uas = tempat_uas.getText();
-        int nla_uas = Integer.parseInt(uas);
         
-                nilai_absen = ((((nilai_absensi / 14) * 100) * 5) / 100);
+                nilai_absen = ((((Integer.valueOf(tempat_hadir.getText()) / 14) * 100) * 5) / 100);
                 nilaiabsen = String.valueOf(nilai_absen);
-                nilai_tugas = (((nilai_tugas1 + nilai_tugas2 + nilai_tugas3) / 3) * 25) / 100;
+                nilai_tugas = (((Integer.valueOf(tempat_tugas1.getText()) + Integer.valueOf(tempat_tugas2.getText()) + Integer.valueOf(tempat_tugas3.getText())) / 3) * 25) / 100;
                 nilaitugas = String.valueOf(nilai_tugas);
-                nilai_uts = (nla_uts * 30) / 100;
+                nilai_uts = (Integer.valueOf(tempat_uts.getText()) * 30) / 100;
                 nilaiuts = String.valueOf(nilai_uts);
-                nilai_uas = (nla_uas * 40) / 100;
+                nilai_uas = (Integer.valueOf(tempat_uas.getText()) * 40) / 100;
                 nilaiuas = String.valueOf(nilai_uas);
                 nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
                 nilaiakhir = String.valueOf(nilai_akhir);
@@ -826,9 +819,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
             tempat_nim.requestFocus();
         }
         
-        if (nilai_absensi>14) {
-            JOptionPane.showMessageDialog(null, "Tidak boleh lebih dari 14!");
-        }
+        
         else
         {
             try 
@@ -837,15 +828,15 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                 Connection kon = DriverManager.getConnection(database,user,pass);
                 Statement stt = kon.createStatement();
                 String SQL = "UPDATE `nilai_ini`"
-                        + "SET `absensi`='"+nilai_absensi+"',"
-                        + "`tugas1`='"+nilai_tugas1+"',"
-                        + "`tugas2`='"+nilai_tugas2+"',"
-                        + "`tugas3`='"+nilai_tugas3+"',"
-                        + "`uts`='"+nla_uts+"',"
-                        + "`uas`='"+nla_uas+"' "
+                        + "SET `absensi`='"+Integer.valueOf(tempat_hadir.getText())+"',"
+                        + "`tugas1`='"+Integer.valueOf(tempat_tugas1.getText())+"',"
+                        + "`tugas2`='"+Integer.valueOf(tempat_tugas2.getText())+"',"
+                        + "`tugas3`='"+Integer.valueOf(tempat_tugas3.getText())+"',"
+                        + "`uts`='"+Integer.valueOf(tempat_uts.getText())+"',"
+                        + "`uas`='"+Integer.valueOf(tempat_uas.getText())+"' "
                         
                     + "WHERE "
-                    + "`nama`='"+(String)kombo_nama.getSelectedItem()+"' and `nama_mk`='"+(String)kombo_matkul.getSelectedItem()+"';";
+                    + "`nama`='"+(String) kombo_nama.getSelectedItem()+"' and `nama_mk`='"+(String) kombo_matkul.getSelectedItem()+"';";
                 
                 if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
                         index = "A";
@@ -864,18 +855,19 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                         ket="Tidak lulus";
                     }
                     
-                    if (nilai_absensi<11) {
+                    if (nilai_absen<11) {
                     ket="Tidak Lulus";
                 }
                 stt.executeUpdate(SQL);
-                data[0] = (String)kombo_nama.getSelectedItem();
-                data[1]= (String)kombo_matkul.getSelectedItem();             
-                data[2] = absensi;
-                data[3] = tugas_1;
-                data[4] = tugas_2;
-                data[5] = tugas_3;
-                data[6] = uts;
-                data[7] = uas;
+                
+                data[0] = (String) kombo_nama.getSelectedItem();
+                data[1] = (String) kombo_matkul.getSelectedItem();                
+                data[2] = tempat_hadir.getText();
+                data[3] = tempat_tugas1.getText();
+                data[4] = tempat_tugas2.getText();
+                data[5] = tempat_tugas3.getText();
+                data[6] = tempat_uts.getText();
+                data[7] = tempat_uas.getText();
                 data[8] = nilaiabsen;
                 data[9] = nilaitugas;
                 data[10] = nilaiuts;
@@ -883,7 +875,6 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                 data[12] = nilaiakhir;
                 data[13] = index;
                 data[14] = ket;
-              
                 
                 table_model_nilai_mhs.removeRow(row);
                 table_model_nilai_mhs.insertRow(row, data);
@@ -891,9 +882,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                 stt.close();
                 kon.close();
                 save.setEnabled(false);
-            } 
-            catch (Exception ex) 
-            {
+            } catch (Exception ex) {
                 System.err.println(ex.getMessage());
             }
         }
@@ -901,17 +890,16 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
 
     private void tabel_nilai_mhsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabel_nilai_mhsMouseClicked
         // TODO add your handling code here:
-        if (evt.getClickCount()==1) {
+        if (evt.getClickCount() == 1) {
             tampilkeun();
         }
     }//GEN-LAST:event_tabel_nilai_mhsMouseClicked
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         // TODO add your handling code here:
-        try 
-        {
+        try {
             Class.forName(driver);
-            Connection kon = DriverManager.getConnection(database,user,pass);
+            Connection kon = DriverManager.getConnection(database, user, pass);
             Statement stt = kon.createStatement();
             String SQL = "Delete From nilai_ini "
                             + "WHERE "
@@ -921,9 +909,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
             stt.close();
             kon.close();
             
-        } 
-        catch (Exception ex) 
-        {
+        } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }
     }//GEN-LAST:event_deleteActionPerformed

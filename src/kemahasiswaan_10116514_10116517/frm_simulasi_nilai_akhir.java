@@ -576,13 +576,7 @@ Object tabel;
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         // TODO add your handling code here:
         String data[]=new String[18];
-        Double nilaiabsen = (((Double.parseDouble(hadir.getText())/14)*100)*(Double.parseDouble(persenAbsen.getText())/100));
-        Double nilaitugas = (((Double.parseDouble(tugas1.getText())+Double.parseDouble(tugas2.getText())+Double.parseDouble(tugas3.getText()))/3)*(Double.parseDouble(persenTugas.getText())/100));
-        Double nilaiuts = (Double.parseDouble(uts.getText())*(Double.parseDouble(persenUTS.getText())/100));
-        Double nilaiuas = (Double.parseDouble(uas.getText())*(Double.parseDouble(persenUAS.getText())/100));
-        Double nilai_akhir = nilaiabsen + nilaitugas + nilaiuts + nilaiuas;
-        String index = "";
-        String ket = "";
+        
        
                     
         if ((tempat_kmk.getText().isEmpty()) || (hadir.getText().isEmpty())) 
@@ -604,6 +598,13 @@ Object tabel;
         {
             try
             {
+                Double nilaiabsen = (((Double.parseDouble(hadir.getText())/14)*100)*(Double.parseDouble(persenAbsen.getText())/100));
+        Double nilaitugas = (((Double.parseDouble(tugas1.getText())+Double.parseDouble(tugas2.getText())+Double.parseDouble(tugas3.getText()))/3)*(Double.parseDouble(persenTugas.getText())/100));
+        Double nilaiuts = (Double.parseDouble(uts.getText())*(Double.parseDouble(persenUTS.getText())/100));
+        Double nilaiuas = (Double.parseDouble(uas.getText())*(Double.parseDouble(persenUAS.getText())/100));
+        Double nilai_akhir = nilaiabsen + nilaitugas + nilaiuts + nilaiuas;
+        String index = "";
+        String ket = "";
                 if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
                         index = "A";
                         ket="Lulus";
@@ -672,9 +673,7 @@ Object tabel;
         String ket = "";
        
                     
-        if ((tempat_kmk.getText().isEmpty()) || (hadir.getText().isEmpty()) || (uts.getText().isEmpty()) || (uas.getText().isEmpty())
-           || (uts.getText().isEmpty()) || (tugas1.getText().isEmpty()) || (tugas2.getText().isEmpty()) || (tugas3.getText().isEmpty())
-           || (persenAbsen.getText().isEmpty()) || (persenTugas.getText().isEmpty()) || (persenUAS.getText().isEmpty()) || (persenUTS.getText().isEmpty())) 
+        if ((tempat_kmk.getText().isEmpty()) || (hadir.getText().isEmpty())) 
         {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             tempat_kmk.requestFocus();

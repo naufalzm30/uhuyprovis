@@ -12,7 +12,7 @@ import java.util.Date;
  * @author ACER PC
  */
 public class frm_nilai_mhs extends javax.swing.JFrame {
-    
+
     koneksi dbsetting;
     String driver, database, user, pass;
     Object tabel;
@@ -41,12 +41,12 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         pass = dbsetting.SettingPanel("DBPassword");
         tabel_nilai_mhs.setModel(table_model_nilai_mhs);
         settableload();
-        
+
         tampilkombonama();
         tampilkombomatkul();
     }
     private javax.swing.table.DefaultTableModel table_model_nilai_mhs = getDefaultTableModel();
-    
+
     private javax.swing.table.DefaultTableModel getDefaultTableModel() {
         //membuat judul header
         return new javax.swing.table.DefaultTableModel(
@@ -70,28 +70,28 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         ) // disable perubahan pada grid
         {
             boolean[] canEdit = new boolean[]{
-                false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
-            
+
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
             }
         };
-        
+
     }
-    
+
     String data[] = new String[15];
-    
+
     private void settableload() {
         String stat = "";
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
-            
+
             Statement stt = kon.createStatement();
             String SQL = "select * from nilai_ini";
             ResultSet res = stt.executeQuery(SQL);
-            
+
             while (res.next()) {
                 nilai_absen = ((((res.getDouble(4) / 14) * 100) * 5) / 100);
                 nilaiabsen = String.valueOf(nilai_absen);
@@ -103,7 +103,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                 nilaiuas = String.valueOf(nilai_uas);
                 nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
                 nilaiakhir = String.valueOf(nilai_akhir);
-                
+
                 if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
                     index = "A";
                     ket = "Lulus";
@@ -120,11 +120,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                     index = "E";
                     ket = "Tidak lulus";
                 }
-                
+
                 if (res.getInt(4) < 11) {
                     ket = "Tidak Lulus";
                 }
-                
+
                 data[0] = res.getString(2);
                 data[1] = res.getString(3);
                 data[2] = res.getString(4);
@@ -148,13 +148,12 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-            
+
             System.exit(0);
         }
     }
-    
-    public void bersihkeun()
-    {
+
+    public void bersihkeun() {
         kombo_nama.setSelectedIndex(0);
         kombo_matkul.setSelectedIndex(0);
         tempat_nim.setText("");
@@ -167,11 +166,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         tempat_ang.setText("");
         tempat_hadir.setText("");
         tempat_cari.setText("");
-     
+
     }
-    
+
     int row = 0;
-    
+
     public void tampilkeun() {
         row = tabel_nilai_mhs.getSelectedRow();
         kombo_nama.setSelectedItem(table_model_nilai_mhs.getValueAt(row, 0).toString());
@@ -190,17 +189,17 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         delete.setEnabled(true);
         cancel.setEnabled(true);
     }
-    
+
     private void tampilkombonama() {
         String stat = "";
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
-            
+
             Statement stt = kon.createStatement();
             String SQL = "select nama from t_mahasiswa order by nim asc";
             ResultSet res = stt.executeQuery(SQL);
-            
+
             while (res.next()) {
                 data[0] = res.getString(1);
                 kombo_nama.addItem(data[0]);
@@ -211,21 +210,21 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-            
+
             System.exit(0);
         }
     }
-    
+
     private void setkombonama() {
         String stat = "";
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
-            
+
             Statement stt = kon.createStatement();
             String SQL = "select nim from t_mahasiswa where nama='" + kombo_nama.getSelectedItem() + "' order by nim asc";
             ResultSet res = stt.executeQuery(SQL);
-            
+
             while (res.next()) {
                 data[0] = res.getString(1);
                 tempat_nim.setText(data[0]);
@@ -236,21 +235,21 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-            
+
             System.exit(0);
         }
     }
-    
+
     private void tampilkombomatkul() {
         String stat = "";
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
-            
+
             Statement stt = kon.createStatement();
             String SQL = "select nama_mk from mata_kuliah order by nomor_mk asc";
             ResultSet res = stt.executeQuery(SQL);
-            
+
             while (res.next()) {
                 data[0] = res.getString(1);
                 kombo_matkul.addItem(data[0]);
@@ -261,21 +260,21 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-            
+
             System.exit(0);
         }
     }
-    
+
     private void setkombomatkul() {
         String stat = "";
         try {
             Class.forName(driver);
             Connection kon = DriverManager.getConnection(database, user, pass);
-            
+
             Statement stt = kon.createStatement();
             String SQL = "select nomor_mk from mata_kuliah where nama_mk='" + kombo_matkul.getSelectedItem() + "' order by nomor_mk asc";
             ResultSet res = stt.executeQuery(SQL);
-            
+
             while (res.next()) {
                 data[0] = res.getString(1);
                 tempat_kmk.setText(data[0]);
@@ -286,7 +285,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-            
+
             System.exit(0);
         }
     }
@@ -684,8 +683,64 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         // TODO add your handling code here:
-        String data[]=new String[15];
-        String kode="";
+        String data[] = new String[15];
+        String kode = "";
+        if ((!tempat_tugas1.getText().matches("[0-9]*")) || (Integer.valueOf(tempat_hadir.getText()) > 14)) {
+            JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
+            tempat_hadir.setText("");
+            tempat_hadir.requestFocus();
+        } else if ((tempat_nim.getText().isEmpty()) || (tempat_kmk.getText().isEmpty()) || (tempat_hadir.getText().isEmpty()) || (tempat_tugas1.getText().isEmpty()) || (tempat_tugas2.getText().isEmpty()) || (tempat_tugas3.getText().isEmpty())
+                || (tempat_uts.getText().isEmpty()) || (tempat_uas.getText().isEmpty()) || (tempat_ang.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_nim.requestFocus();
+
+        } else if (tempat_kmk.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_kmk.requestFocus();
+        } else if (tempat_hadir.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_hadir.requestFocus();
+        } else if (tempat_tugas1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_tugas1.requestFocus();
+        } else if (tempat_tugas2.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_tugas2.requestFocus();
+        } else if (tempat_tugas3.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_tugas3.requestFocus();
+        } else if (tempat_uts.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_uts.requestFocus();
+        } else if (tempat_uas.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_uas.requestFocus();
+        } else if (tempat_ang.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_ang.requestFocus();
+        } else if ((!tempat_tugas1.getText().matches("[0-9]*")) || ((Integer.parseInt(tempat_tugas1.getText())) > 100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimal 100");
+            tempat_tugas1.setText("");
+            tempat_tugas1.requestFocus();
+        } else if ((!tempat_tugas2.getText().matches("[0-9]*")) || ((Integer.parseInt(tempat_tugas2.getText())) > 100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimal 100");
+            tempat_tugas2.setText("");
+            tempat_tugas2.requestFocus();
+        } else if ((!tempat_tugas3.getText().matches("[0-9]*")) || ((Integer.parseInt(tempat_tugas3.getText())) > 100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimal 100");
+            tempat_tugas3.setText("");
+            tempat_tugas3.requestFocus();
+        } else if ((!tempat_uts.getText().matches("[0-9]*")) || ((Integer.parseInt(tempat_uts.getText())) > 100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimal 100");
+            tempat_uts.setText("");
+            tempat_uts.requestFocus();
+        } else if ((!tempat_uas.getText().matches("[0-9]*")) || ((Integer.parseInt(tempat_uas.getText())) > 100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimal 100");
+            tempat_uas.setText("");
+            tempat_uas.requestFocus();
+
+        } else {
+            try {
                 nilai_absen = ((((Integer.valueOf(tempat_hadir.getText()) / 14) * 100) * 5) / 100);
                 nilaiabsen = String.valueOf(nilai_absen);
                 nilai_tugas = (((Integer.valueOf(tempat_tugas1.getText()) + Integer.valueOf(tempat_tugas2.getText()) + Integer.valueOf(tempat_tugas3.getText())) / 3) * 25) / 100;
@@ -696,51 +751,28 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                 nilaiuas = String.valueOf(nilai_uas);
                 nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
                 nilaiakhir = String.valueOf(nilai_akhir);
-                
-                    if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
-                        index = "A";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
-                        index = "B";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
-                        index = "C";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
-                        index="D";
-                        ket="Tidak Lulus";
-                    } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
-                        index="E";
-                        ket="Tidak lulus";
-                    }
-                    
-                    if (Integer.valueOf(tempat_hadir.getText())<11) {
-                    ket="Tidak Lulus";
-                }
-                
 
-        if ((tempat_nim.getText().isEmpty()) || (tempat_kmk.getText().isEmpty())) 
-        {
-            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
-            tempat_nim.requestFocus();
-        }
-        
-        if (Integer.valueOf(tempat_hadir.getText()) < 11) {
-            ket = "Tidak Lulus";
-        }
-        
-        if ((tempat_nim.getText().isEmpty()) || (tempat_kmk.getText().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
-            tempat_nim.requestFocus();
-         
-        }
-        else if(Integer.valueOf(tempat_hadir.getText())>14){
-            JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
-            tempat_hadir.setText("");
-            tempat_hadir.requestFocus();
-        }
-        else {
-            try {
+                if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
+                    index = "A";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
+                    index = "B";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
+                    index = "C";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
+                    index = "D";
+                    ket = "Tidak Lulus";
+                } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
+                    index = "E";
+                    ket = "Tidak lulus";
+                }
+
+                if (Integer.valueOf(tempat_hadir.getText()) < 11) {
+                    ket = "Tidak Lulus";
+                }
+
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(
                         database,
@@ -773,7 +805,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                         + "'" + tempat_kmk.getText() + "',"
                         + "'" + tempat_ang.getText() + "')";
                 stt.executeUpdate(SQL);
-                
+
                 data[0] = (String) kombo_nama.getSelectedItem();
                 data[1] = (String) kombo_matkul.getSelectedItem();
                 data[2] = tempat_hadir.getText();
@@ -792,9 +824,9 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                 table_model_nilai_mhs.insertRow(0, data);
                 stt.close();
                 kon.close();
-                
+
                 save.setEnabled(false);
-                
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null,
                         ex.getMessage(), "Error",
@@ -807,7 +839,62 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
     private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
         // TODO add your handling code here:
         String data[] = new String[15];
-        
+
+        if ((!tempat_tugas1.getText().matches("[0-9]*")) || (Integer.valueOf(tempat_hadir.getText()) > 14)) {
+            JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
+            tempat_hadir.setText("");
+            tempat_hadir.requestFocus();
+        } else if ((tempat_nim.getText().isEmpty()) || (tempat_kmk.getText().isEmpty()) || (tempat_hadir.getText().isEmpty()) || (tempat_tugas1.getText().isEmpty()) || (tempat_tugas2.getText().isEmpty()) || (tempat_tugas3.getText().isEmpty())
+                || (tempat_uts.getText().isEmpty()) || (tempat_uas.getText().isEmpty()) || (tempat_ang.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_nim.requestFocus();
+
+        } else if (tempat_kmk.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_kmk.requestFocus();
+        } else if (tempat_hadir.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_hadir.requestFocus();
+        } else if (tempat_tugas1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_tugas1.requestFocus();
+        } else if (tempat_tugas2.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_tugas2.requestFocus();
+        } else if (tempat_tugas3.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_tugas3.requestFocus();
+        } else if (tempat_uts.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_uts.requestFocus();
+        } else if (tempat_uas.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_uas.requestFocus();
+        } else if (tempat_ang.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_ang.requestFocus();
+        } else if ((!tempat_tugas1.getText().matches("[0-9]*")) || ((Integer.parseInt(tempat_tugas1.getText())) > 100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimal 100");
+            tempat_tugas1.setText("");
+            tempat_tugas1.requestFocus();
+        } else if ((!tempat_tugas2.getText().matches("[0-9]*")) || ((Integer.parseInt(tempat_tugas2.getText())) > 100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimal 100");
+            tempat_tugas2.setText("");
+            tempat_tugas2.requestFocus();
+        } else if ((!tempat_tugas3.getText().matches("[0-9]*")) || ((Integer.parseInt(tempat_tugas3.getText())) > 100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimal 100");
+            tempat_tugas3.setText("");
+            tempat_tugas3.requestFocus();
+        } else if ((!tempat_uts.getText().matches("[0-9]*")) || ((Integer.parseInt(tempat_uts.getText())) > 100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimal 100");
+            tempat_uts.setText("");
+            tempat_uts.requestFocus();
+        } else if ((!tempat_uas.getText().matches("[0-9]*")) || ((Integer.parseInt(tempat_uas.getText())) > 100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimal 100");
+            tempat_uas.setText("");
+            tempat_uas.requestFocus();
+        } else {
+            try {
                 nilai_absen = ((((Integer.valueOf(tempat_hadir.getText()) / 14) * 100) * 5) / 100);
                 nilaiabsen = String.valueOf(nilai_absen);
                 nilai_tugas = (((Integer.valueOf(tempat_tugas1.getText()) + Integer.valueOf(tempat_tugas2.getText()) + Integer.valueOf(tempat_tugas3.getText())) / 3) * 25) / 100;
@@ -818,62 +905,44 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                 nilaiuas = String.valueOf(nilai_uas);
                 nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
                 nilaiakhir = String.valueOf(nilai_akhir);
-                
-                    
-        if ((tempat_nim.getText().isEmpty()))
-        {
-            JOptionPane.showMessageDialog(null,"data tidak boleh kosong, silahkan dilengkapi");
-            tempat_nim.requestFocus();
-        }
-        
-        
-        else if(Integer.valueOf(tempat_hadir.getText())>14){
-            JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
-            tempat_hadir.setText("");
-            tempat_hadir.requestFocus();
-        }
-        else
-        {
-            try 
-            {
+
                 Class.forName(driver);
-                Connection kon = DriverManager.getConnection(database,user,pass);
+                Connection kon = DriverManager.getConnection(database, user, pass);
                 Statement stt = kon.createStatement();
                 String SQL = "UPDATE `nilai_ini`"
-                        + "SET `absensi`='"+Integer.valueOf(tempat_hadir.getText())+"',"
-                        + "`tugas1`='"+Integer.valueOf(tempat_tugas1.getText())+"',"
-                        + "`tugas2`='"+Integer.valueOf(tempat_tugas2.getText())+"',"
-                        + "`tugas3`='"+Integer.valueOf(tempat_tugas3.getText())+"',"
-                        + "`uts`='"+Integer.valueOf(tempat_uts.getText())+"',"
-                        + "`uas`='"+Integer.valueOf(tempat_uas.getText())+"' "
-                        
-                    + "WHERE "
-                    + "`nama`='"+(String) kombo_nama.getSelectedItem()+"' and `nama_mk`='"+(String) kombo_matkul.getSelectedItem()+"';";
-                
+                        + "SET `absensi`='" + Integer.valueOf(tempat_hadir.getText()) + "',"
+                        + "`tugas1`='" + Integer.valueOf(tempat_tugas1.getText()) + "',"
+                        + "`tugas2`='" + Integer.valueOf(tempat_tugas2.getText()) + "',"
+                        + "`tugas3`='" + Integer.valueOf(tempat_tugas3.getText()) + "',"
+                        + "`uts`='" + Integer.valueOf(tempat_uts.getText()) + "',"
+                        + "`uas`='" + Integer.valueOf(tempat_uas.getText()) + "' "
+                        + "WHERE "
+                        + "`nama`='" + (String) kombo_nama.getSelectedItem() + "' and `nama_mk`='" + (String) kombo_matkul.getSelectedItem() + "';";
+
                 if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
-                        index = "A";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
-                        index = "B";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
-                        index = "C";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
-                        index="D";
-                        ket="Tidak Lulus";
-                    } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
-                        index="E";
-                        ket="Tidak lulus";
-                    }
-                    
-                    if (nilai_absen<11) {
-                    ket="Tidak Lulus";
+                    index = "A";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
+                    index = "B";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
+                    index = "C";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
+                    index = "D";
+                    ket = "Tidak Lulus";
+                } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
+                    index = "E";
+                    ket = "Tidak lulus";
+                }
+
+                if (nilai_absen < 11) {
+                    ket = "Tidak Lulus";
                 }
                 stt.executeUpdate(SQL);
-                
+
                 data[0] = (String) kombo_nama.getSelectedItem();
-                data[1] = (String) kombo_matkul.getSelectedItem();                
+                data[1] = (String) kombo_matkul.getSelectedItem();
                 data[2] = tempat_hadir.getText();
                 data[3] = tempat_tugas1.getText();
                 data[4] = tempat_tugas2.getText();
@@ -887,10 +956,10 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                 data[12] = nilaiakhir;
                 data[13] = index;
                 data[14] = ket;
-                
+
                 table_model_nilai_mhs.removeRow(row);
                 table_model_nilai_mhs.insertRow(row, data);
-                
+
                 stt.close();
                 kon.close();
                 save.setEnabled(false);
@@ -914,13 +983,13 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
             Connection kon = DriverManager.getConnection(database, user, pass);
             Statement stt = kon.createStatement();
             String SQL = "Delete From nilai_ini "
-                            + "WHERE "
-                          + "nim='"+Integer.valueOf(tempat_nim.getText())+"'";
+                    + "WHERE "
+                    + "nim='" + Integer.valueOf(tempat_nim.getText()) + "'";
             stt.executeUpdate(SQL);
             table_model_nilai_mhs.removeRow(row);
             stt.close();
             kon.close();
-            
+
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }

@@ -770,6 +770,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
 
     private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
         // TODO add your handling code here:
+        String data[] = new String[15];
         String absensi = tempat_hadir.getText();
         int nilai_absensi = Integer.parseInt(absensi);
         String tugas_1 = tempat_tugas1.getText();
@@ -783,30 +784,6 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         String uas = tempat_uas.getText();
         int nla_uas = Integer.parseInt(uas);
         
-        if ((tempat_nim.getText().isEmpty()))
-        {
-            JOptionPane.showMessageDialog(null,"data tidak boleh kosong, silahkan dilengkapi");
-            tempat_nim.requestFocus();
-        }
-        else
-        {
-            try 
-            {
-                Class.forName(driver);
-                Connection kon = DriverManager.getConnection(database,user,pass);
-                Statement stt = kon.createStatement();
-                String SQL = "UPDATE `nilai_ini`"
-                        + "SET `absensi`='"+nilai_absensi+"',"
-                        + "`tugas1`='"+nilai_tugas1+"',"
-                        + "`tugas2`='"+nilai_tugas2+"',"
-                        + "`tugas3`='"+nilai_tugas3+"',"
-                        + "`uts`='"+nla_uts+"',"
-                        + "`uas`='"+nla_uas+"' "
-                        
-                    + "WHERE "
-                    + "`nim`='"+tempat_nim.getText()+"' and `nomor_mk`='"+tempat_kmk.getText()+"';";
-                stt.executeUpdate(SQL);
-                
                 nilai_absen = ((((nilai_absensi / 14) * 100) * 5) / 100);
                 nilaiabsen = String.valueOf(nilai_absen);
                 nilai_tugas = (((nilai_tugas1 + nilai_tugas2 + nilai_tugas3) / 3) * 25) / 100;
@@ -838,7 +815,31 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                     if (nilai_absensi<11) {
                     ket="Tidak Lulus";
                 }
-                
+        if ((tempat_nim.getText().isEmpty()))
+        {
+            JOptionPane.showMessageDialog(null,"data tidak boleh kosong, silahkan dilengkapi");
+            tempat_nim.requestFocus();
+        }
+        else
+        {
+            try 
+            {
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(database,user,pass);
+                Statement stt = kon.createStatement();
+                String SQL = "UPDATE `nilai_ini`"
+                        + "SET `absensi`='"+nilai_absensi+"',"
+                        + "`tugas1`='"+nilai_tugas1+"',"
+                        + "`tugas2`='"+nilai_tugas2+"',"
+                        + "`tugas3`='"+nilai_tugas3+"',"
+                        + "`uts`='"+nla_uts+"',"
+                        + "`uas`='"+nla_uas+"' "
+                        
+                    + "WHERE "
+                    + "`nama`='"+(String)kombo_nama.getSelectedItem()+"' and `nama_mk`='"+(String)kombo_matkul.getSelectedItem()+"';";
+                stt.executeUpdate(SQL);
+                data[0] = (String)kombo_nama.getSelectedItem();
+                data[1]= (String)kombo_matkul.getSelectedItem();             
                 data[2] = absensi;
                 data[3] = tugas_1;
                 data[4] = tugas_2;

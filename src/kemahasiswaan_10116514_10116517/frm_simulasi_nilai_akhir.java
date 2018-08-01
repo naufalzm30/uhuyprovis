@@ -30,6 +30,7 @@ Object tabel;
         pass = dbsetting.SettingPanel("DBPassword");
         tabel_simulasi.setModel(table_model_simulasi_nilai_mhs);
         settableload();
+        tampilkombomatkul();
     }
      private javax.swing.table.DefaultTableModel table_model_simulasi_nilai_mhs=getDefaultTableModel();
     private javax.swing.table.DefaultTableModel getDefaultTableModel()
@@ -71,6 +72,56 @@ Object tabel;
      };
         
     }
+    
+    private void tampilkombomatkul() {
+        String stat = "";
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select nama_mk from mata_kuliah order by nomor_mk asc";
+            ResultSet res = stt.executeQuery(SQL);
+
+            while (res.next()) {
+                data[0] = res.getString(1);
+                kombo_matkul.addItem(data[0]);
+            }
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+
+            System.exit(0);
+        }
+    }
+    
+    private void setkombomatkul() {
+        String stat = "";
+        try {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database, user, pass);
+
+            Statement stt = kon.createStatement();
+            String SQL = "select nomor_mk from mata_kuliah where nama_mk='"+kombo_matkul.getSelectedItem()+"' order by nomor_mk asc";
+            ResultSet res = stt.executeQuery(SQL);
+
+            while (res.next()) {
+                data[0] = res.getString(1);
+                tempat_kmk.setText(data[0]);
+            }
+            res.close();
+            stt.close();
+            kon.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+
+            System.exit(0);
+        }
+    }
      String data[] = new String[5];
  private void settableload()
     {
@@ -81,18 +132,15 @@ Object tabel;
             Connection kon = DriverManager.getConnection(database,user,pass);
             
             Statement stt=kon.createStatement();
-            String SQL = "select * from simulasi_nilai";
-            ResultSet res = stt.executeQuery(SQL);
-            while (res.next())
-            {
-                data[0] = res.getString(1);
-                data[1] = res.getString(2);
-                data[2] = res.getString(3);
-                data[3] = res.getString(4);
-                data[4] = res.getString(5);
+            String SQL = "select * from mata_kuliah";
+           
+            
+            data[0] ="" ;
+                data[1] ="" ;
+               
                 table_model_simulasi_nilai_mhs.addRow(data);
-            }
-            res.close();
+            
+            
             stt.close();
             kon.close();
             
@@ -119,8 +167,7 @@ Object tabel;
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        tempat_kmk = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -153,6 +200,7 @@ Object tabel;
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        kombo_matkul = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -182,6 +230,8 @@ Object tabel;
         jLabel2.setText("Nama Mata Kuliah");
 
         jLabel3.setText("Kode MK");
+
+        tempat_kmk.setEditable(false);
 
         jLabel4.setText("Presentase Absen");
 
@@ -240,6 +290,13 @@ Object tabel;
 
         jButton6.setText("Keluar");
 
+        kombo_matkul.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        kombo_matkul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kombo_matkulActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -277,14 +334,6 @@ Object tabel;
                                 .addGap(19, 19, 19)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(15, 15, 15)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(59, 59, 59)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel4)
                                         .addGap(18, 18, 18)
                                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -303,7 +352,16 @@ Object tabel;
                                         .addGap(59, 59, 59)
                                         .addComponent(jLabel17)
                                         .addGap(28, 28, 28)
-                                        .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jLabel2)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(kombo_matkul, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jLabel3)
+                                            .addGap(62, 62, 62)
+                                            .addComponent(tempat_kmk, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -338,15 +396,15 @@ Object tabel;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(48, 48, 48)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(kombo_matkul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
+                    .addComponent(tempat_kmk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(3, 3, 3)
@@ -423,6 +481,11 @@ Object tabel;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void kombo_matkulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kombo_matkulActionPerformed
+        // TODO add your handling code here:
+        setkombomatkul();
+    }//GEN-LAST:event_kombo_matkulActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -484,11 +547,9 @@ Object tabel;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
@@ -496,6 +557,8 @@ Object tabel;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JComboBox<String> kombo_matkul;
     private javax.swing.JTable tabel_simulasi;
+    private javax.swing.JTextField tempat_kmk;
     // End of variables declaration//GEN-END:variables
 }

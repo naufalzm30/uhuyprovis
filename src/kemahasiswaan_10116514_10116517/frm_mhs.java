@@ -390,7 +390,7 @@ Object tabel;
                             +  "'"+tempat_nama.getText()+"',"
                             + "'"+tempat_lahir.getText()+"',"
                             + "'"+tempat_tgl.getText()+"',"
-                            + "'"+tempat_alamat.getText()+"')";b
+                            + "'"+tempat_alamat.getText()+"')";
                 stt.executeUpdate(SQL);
                 data[0] = tempat_nim.getText();
                 data[1] = tempat_nama.getText();

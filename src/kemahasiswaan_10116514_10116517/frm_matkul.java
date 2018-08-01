@@ -341,9 +341,9 @@ public class frm_matkul extends javax.swing.JFrame {
                             .addComponent(namk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 92, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 289, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(out)
                             .addComponent(cancel)
@@ -453,10 +453,23 @@ public class frm_matkul extends javax.swing.JFrame {
         String no_mk = nomk.getText();
         String nama_mk = namk.getText();
 
-        if ((no_mk.isEmpty()) | (nama_mk.isEmpty())) {
-            JOptionPane.showMessageDialog(null, "data tidak boleh kosong, silahkan dilengkapi");
+        if ((namk.getText().isEmpty()) || (nomk.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            namk.requestFocus();
+        } else if ((nomk.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             nomk.requestFocus();
-        } else {
+        } else if (!namk.getText().matches("[0-9a-zA-Z]*")) {
+            JOptionPane.showMessageDialog(null, "Data Tidak Boleh Simbol");
+            namk.setText("");
+            namk.requestFocus();
+        } else if (!nomk.getText().matches("[0-9a-zA-Z]*")){
+            JOptionPane.showMessageDialog(null, "Data Tidak Boleh Simbol");
+            nomk.setText("");
+            nomk.requestFocus();
+        }
+        
+        else {
             try {
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(database, user, pass);

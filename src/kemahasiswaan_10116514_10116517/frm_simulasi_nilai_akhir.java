@@ -722,7 +722,11 @@ public class frm_simulasi_nilai_akhir extends javax.swing.JFrame {
         table_model_simulasi_nilai_mhs.removeRow(row);
         String data[] = new String[18];
 
-        if ((tempat_kmk.getText().isEmpty()) || (hadir.getText().isEmpty()) || (uts.getText().isEmpty()) || (uas.getText().isEmpty())
+        if (Integer.valueOf(hadir.getText()) > 14) {
+            JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
+            hadir.setText("");
+            hadir.requestFocus();
+        } else if ((tempat_kmk.getText().isEmpty()) || (hadir.getText().isEmpty()) || (uts.getText().isEmpty()) || (uas.getText().isEmpty())
                 || (tugas1.getText().isEmpty()) || (tugas2.getText().isEmpty()) || (tugas3.getText().isEmpty()) || (persenAbsen.getText().isEmpty())
                 || (persenTugas.getText().isEmpty()) || (persenUTS.getText().isEmpty()) || (persenUAS.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
@@ -757,12 +761,42 @@ public class frm_simulasi_nilai_akhir extends javax.swing.JFrame {
         } else if ((persenUAS.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             persenUAS.requestFocus();
-        } else if (!persenAbsen.getText().matches("[0-9]*")) {
-            JOptionPane.showMessageDialog(null, "Data harus ANGKA!!!");
-        } else if (Integer.valueOf(hadir.getText()) > 14) {
-            JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
-            hadir.setText("");
-            hadir.requestFocus();
+        } else if ((!persenAbsen.getText().matches("[0-9]*")) || (Integer.parseInt(persenAbsen.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            persenAbsen.setText("");
+            persenAbsen.requestFocus();
+        }  else if ((!persenTugas.getText().matches("[0-9]*")) || (Integer.parseInt(persenTugas.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            persenTugas.setText("");
+            persenTugas.requestFocus();
+        }  else if ((!persenUTS.getText().matches("[0-9]*")) || (Integer.parseInt(persenUTS.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            persenUTS.setText("");
+            persenUTS.requestFocus();
+        }  else if ((!persenUAS.getText().matches("[0-9]*")) || (Integer.parseInt(persenUAS.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            persenUAS.setText("");
+            persenUAS.requestFocus();
+        }  else if ((!tugas1.getText().matches("[0-9]*")) || (Integer.parseInt(tugas1.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            tugas1.setText("");
+            tugas1.requestFocus();
+        }  else if ((!tugas2.getText().matches("[0-9]*")) || (Integer.parseInt(tugas2.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            tugas2.setText("");
+            tugas2.requestFocus();
+        }  else if ((!tugas3.getText().matches("[0-9]*")) || (Integer.parseInt(tugas3.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            tugas3.setText("");
+            tugas3.requestFocus();
+        }  else if ((!uts.getText().matches("[0-9]*")) || (Integer.parseInt(uts.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            uts.setText("");
+            uts.requestFocus();
+        }  else if ((!uas.getText().matches("[0-9]*")) || (Integer.parseInt(uas.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            uas.setText("");
+            uas.requestFocus();
         } else {
             try {
                 Double nilaiabsen = (((Double.parseDouble(hadir.getText()) / 14) * 100) * (Double.parseDouble(persenAbsen.getText()) / 100));

@@ -595,6 +595,11 @@ Object tabel;
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             hadir.requestFocus();
         }
+        else if(Integer.valueOf(hadir.getText())>14){
+            JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
+            hadir.setText("");
+            hadir.requestFocus();
+        }
         else
         {
             try
@@ -667,7 +672,9 @@ Object tabel;
         String ket = "";
        
                     
-        if ((tempat_kmk.getText().isEmpty()) || (hadir.getText().isEmpty())) 
+        if ((tempat_kmk.getText().isEmpty()) || (hadir.getText().isEmpty()) || (uts.getText().isEmpty()) || (uas.getText().isEmpty())
+           || (uts.getText().isEmpty()) || (tugas1.getText().isEmpty()) || (tugas2.getText().isEmpty()) || (tugas3.getText().isEmpty())
+           || (persenAbsen.getText().isEmpty()) || (persenTugas.getText().isEmpty()) || (persenUAS.getText().isEmpty()) || (persenUTS.getText().isEmpty())) 
         {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             tempat_kmk.requestFocus();
@@ -675,6 +682,11 @@ Object tabel;
         else if((hadir.getText().isEmpty()))
         {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            hadir.requestFocus();
+        }
+        else if(Integer.valueOf(hadir.getText())>14){
+            JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
+            hadir.setText("");
             hadir.requestFocus();
         }
         else

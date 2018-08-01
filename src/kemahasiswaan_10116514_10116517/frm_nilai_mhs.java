@@ -732,7 +732,14 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         if ((tempat_nim.getText().isEmpty()) || (tempat_kmk.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             tempat_nim.requestFocus();
-        } else {
+         
+        }
+        else if(Integer.valueOf(tempat_hadir.getText())>14){
+            JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
+            tempat_hadir.setText("");
+            tempat_hadir.requestFocus();
+        }
+        else {
             try {
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(
@@ -820,6 +827,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         }
         
         
+        else if(Integer.valueOf(tempat_hadir.getText())>14){
+            JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
+            tempat_hadir.setText("");
+            tempat_hadir.requestFocus();
+        }
         else
         {
             try 

@@ -4,20 +4,24 @@
  * and open the template in the editor.
  */
 package kemahasiswaan_10116514_10116517;
+
 import javax.swing.*;
 //Fungsi import untuk SQL
 import java.sql.*;
 //Fungsi import untuk tanggal
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 /**
  *
  * @author Naufal Zayn M
  */
 public class frm_simulasi_nilai_akhir extends javax.swing.JFrame {
-koneksi dbsetting;
-String driver,database,user,pass;
-Object tabel;
+
+    koneksi dbsetting;
+    String driver, database, user, pass;
+    Object tabel;
+
     /**
      * Creates new form frm_simulasi_nilai_akhir
      */
@@ -29,52 +33,49 @@ Object tabel;
         user = dbsetting.SettingPanel("DBUsername");
         pass = dbsetting.SettingPanel("DBPassword");
         tabel_simulasi.setModel(table_model_simulasi_nilai_mhs);
-        
+
         tampilkombomatkul();
         nonaktif();
     }
-     private javax.swing.table.DefaultTableModel table_model_simulasi_nilai_mhs=getDefaultTableModel();
-    private javax.swing.table.DefaultTableModel getDefaultTableModel()
-    {
-     //membuat judul header
-     return new javax.swing.table.DefaultTableModel
-     (
-          new Object [] [] {},
-          new String [] {"Nama M.K",
-                         "Presentasi Absen",
-                         "Presentasi Tugas",
-                         "Presentasi UTS",
-                         "Presentasi UAS",                         
-                         "Absensi",
-                         "Tgs 1",
-                         "Tgs 2",
-                         "Tgs 3",
-                         "UTS",
-                         "UAS",
-                         "Nilai Absen",
-                         "Nilai tugas",
-                         "Nilai UTS",
-                         "Nilai UAS",
-                         "Nilai Akhir",
-                         "Index",
-                         "Keterangan"
-                         }
-     )
-     // disable perubahan pada grid
-     {
-         boolean[] canEdit = new boolean[]
-         {
-             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
-         };
-         
-         public boolean isCellEditable(int rowIndex, int columnIndex)
-         {
-             return canEdit[columnIndex];
-         }
-     };
-        
+    private javax.swing.table.DefaultTableModel table_model_simulasi_nilai_mhs = getDefaultTableModel();
+
+    private javax.swing.table.DefaultTableModel getDefaultTableModel() {
+        //membuat judul header
+        return new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Nama M.K",
+                    "Presentasi Absen",
+                    "Presentasi Tugas",
+                    "Presentasi UTS",
+                    "Presentasi UAS",
+                    "Absensi",
+                    "Tgs 1",
+                    "Tgs 2",
+                    "Tgs 3",
+                    "UTS",
+                    "UAS",
+                    "Nilai Absen",
+                    "Nilai tugas",
+                    "Nilai UTS",
+                    "Nilai UAS",
+                    "Nilai Akhir",
+                    "Index",
+                    "Keterangan"
+                }
+        ) // disable perubahan pada grid
+        {
+            boolean[] canEdit = new boolean[]{
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
+
     }
     String data[] = new String[15];
+
     private void tampilkombomatkul() {
         String stat = "";
         try {
@@ -99,7 +100,7 @@ Object tabel;
             System.exit(0);
         }
     }
-    
+
     private void setkombomatkul() {
         String stat = "";
         try {
@@ -107,7 +108,7 @@ Object tabel;
             Connection kon = DriverManager.getConnection(database, user, pass);
 
             Statement stt = kon.createStatement();
-            String SQL = "select nomor_mk from mata_kuliah where nama_mk='"+kombo_matkul.getSelectedItem()+"' order by nomor_mk asc";
+            String SQL = "select nomor_mk from mata_kuliah where nama_mk='" + kombo_matkul.getSelectedItem() + "' order by nomor_mk asc";
             ResultSet res = stt.executeQuery(SQL);
 
             while (res.next()) {
@@ -124,8 +125,8 @@ Object tabel;
             System.exit(0);
         }
     }
-     public void aktif_teks()
-    {
+
+    public void aktif_teks() {
         kombo_matkul.setEnabled(true);
         persenAbsen.setEnabled(true);
         persenTugas.setEnabled(true);
@@ -138,8 +139,10 @@ Object tabel;
         uts.setEnabled(true);
         uas.setEnabled(true);
     }
-      public void membersihkan_teks()
-    {
+
+    public void membersihkan_teks() {
+        kombo_matkul.setSelectedIndex(0);
+        tempat_kmk.setText("");
         persenAbsen.setText("");
         persenTugas.setText("");
         persenUTS.setText("");
@@ -151,9 +154,9 @@ Object tabel;
         uts.setText("");
         uas.setText("");
     }
-     
-     public void nonaktif(){
-         kombo_matkul.setEnabled(false);
+
+    public void nonaktif() {
+        kombo_matkul.setEnabled(false);
         persenAbsen.setEnabled(false);
         persenTugas.setEnabled(false);
         persenUTS.setEnabled(false);
@@ -164,28 +167,30 @@ Object tabel;
         tugas3.setEnabled(false);
         uts.setEnabled(false);
         uas.setEnabled(false);
-     }
+    }
 
-     int row = 0;
-    public void tampilkeun(){
-        row = tabel_simulasi.getSelectedRow();       
+    int row = 0;
+
+    public void tampilkeun() {
+        row = tabel_simulasi.getSelectedRow();
         kombo_matkul.setSelectedItem(table_model_simulasi_nilai_mhs.getValueAt(row, 0).toString());
-        persenAbsen.setText( table_model_simulasi_nilai_mhs.getValueAt(row, 1).toString());
+        persenAbsen.setText(table_model_simulasi_nilai_mhs.getValueAt(row, 1).toString());
         persenTugas.setText(table_model_simulasi_nilai_mhs.getValueAt(row, 2).toString());
         persenUTS.setText(table_model_simulasi_nilai_mhs.getValueAt(row, 3).toString());
-        persenUAS.setText(table_model_simulasi_nilai_mhs.getValueAt(row, 4).toString());        
+        persenUAS.setText(table_model_simulasi_nilai_mhs.getValueAt(row, 4).toString());
         hadir.setText(table_model_simulasi_nilai_mhs.getValueAt(row, 5).toString());
         tugas1.setText(table_model_simulasi_nilai_mhs.getValueAt(row, 6).toString());
         tugas2.setText(table_model_simulasi_nilai_mhs.getValueAt(row, 7).toString());
         tugas3.setText(table_model_simulasi_nilai_mhs.getValueAt(row, 8).toString());
         uts.setText(table_model_simulasi_nilai_mhs.getValueAt(row, 9).toString());
         uas.setText(table_model_simulasi_nilai_mhs.getValueAt(row, 10).toString());
-        
-       save.setEnabled(false);
+
+        save.setEnabled(false);
         change.setEnabled(true);
         erase.setEnabled(true);
         cancel.setEnabled(true);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -570,61 +575,118 @@ Object tabel;
         change.setEnabled(false);
         erase.setEnabled(false);
         membersihkan_teks();
-        
+
     }//GEN-LAST:event_plusActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         // TODO add your handling code here:
-        String data[]=new String[18];
-        Double nilaiabsen = (((Double.parseDouble(hadir.getText())/14)*100)*(Double.parseDouble(persenAbsen.getText())/100));
-        Double nilaitugas = (((Double.parseDouble(tugas1.getText())+Double.parseDouble(tugas2.getText())+Double.parseDouble(tugas3.getText()))/3)*(Double.parseDouble(persenTugas.getText())/100));
-        Double nilaiuts = (Double.parseDouble(uts.getText())*(Double.parseDouble(persenUTS.getText())/100));
-        Double nilaiuas = (Double.parseDouble(uas.getText())*(Double.parseDouble(persenUAS.getText())/100));
-        Double nilai_akhir = nilaiabsen + nilaitugas + nilaiuts + nilaiuas;
-        String index = "";
-        String ket = "";
-       
-                    
-        if ((tempat_kmk.getText().isEmpty()) || (hadir.getText().isEmpty())) 
-        {
-            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
-            tempat_kmk.requestFocus();
-        }
-        else if((hadir.getText().isEmpty()))
-        {
-            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
-            hadir.requestFocus();
-        }
-        else if(Integer.valueOf(hadir.getText())>14){
+        if (Integer.valueOf(hadir.getText()) > 14) {
             JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
             hadir.setText("");
             hadir.requestFocus();
-        }
-        else
-        {
-            try
-            {
+        } else if ((tempat_kmk.getText().isEmpty()) || (hadir.getText().isEmpty()) || (uts.getText().isEmpty()) || (uas.getText().isEmpty())
+                || (tugas1.getText().isEmpty()) || (tugas2.getText().isEmpty()) || (tugas3.getText().isEmpty()) || (persenAbsen.getText().isEmpty())
+                || (persenTugas.getText().isEmpty()) || (persenUTS.getText().isEmpty()) || (persenUAS.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_kmk.requestFocus();
+        } else if ((hadir.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            hadir.requestFocus();
+        } else if ((uts.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            uts.requestFocus();
+        } else if ((uas.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            uas.requestFocus();
+        } else if ((tugas1.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tugas1.requestFocus();
+        } else if ((tugas2.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tugas2.requestFocus();
+        } else if ((tugas3.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tugas3.requestFocus();
+        } else if ((persenAbsen.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            persenAbsen.requestFocus();
+        } else if ((persenTugas.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            persenTugas.requestFocus();
+        } else if ((persenUTS.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            persenUTS.requestFocus();
+        } else if ((persenUAS.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            persenUAS.requestFocus();
+        } else if ((!persenAbsen.getText().matches("[0-9]*")) || (Integer.parseInt(persenAbsen.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            persenAbsen.setText("");
+            persenAbsen.requestFocus();
+        }  else if ((!persenTugas.getText().matches("[0-9]*")) || (Integer.parseInt(persenTugas.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            persenTugas.setText("");
+            persenTugas.requestFocus();
+        }  else if ((!persenUTS.getText().matches("[0-9]*")) || (Integer.parseInt(persenUTS.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            persenUTS.setText("");
+            persenUTS.requestFocus();
+        }  else if ((!persenUAS.getText().matches("[0-9]*")) || (Integer.parseInt(persenUAS.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            persenUAS.setText("");
+            persenUAS.requestFocus();
+        }  else if ((!tugas1.getText().matches("[0-9]*")) || (Integer.parseInt(tugas1.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            tugas1.setText("");
+            tugas1.requestFocus();
+        }  else if ((!tugas2.getText().matches("[0-9]*")) || (Integer.parseInt(tugas2.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            tugas2.setText("");
+            tugas2.requestFocus();
+        }  else if ((!tugas3.getText().matches("[0-9]*")) || (Integer.parseInt(tugas3.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            tugas3.setText("");
+            tugas3.requestFocus();
+        }  else if ((!uts.getText().matches("[0-9]*")) || (Integer.parseInt(uts.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            uts.setText("");
+            uts.requestFocus();
+        }  else if ((!uas.getText().matches("[0-9]*")) || (Integer.parseInt(uas.getText())>100)) {
+            JOptionPane.showMessageDialog(null, "Data Harus Angka dan Nilai Maksimmal 100");
+            uas.setText("");
+            uas.requestFocus();
+        } else {
+            try {
+                String data[] = new String[18];
+                Double nilaiabsen = (((Double.parseDouble(hadir.getText()) / 14) * 100) * (Double.parseDouble(persenAbsen.getText()) / 100));
+                Double nilaitugas = (((Double.parseDouble(tugas1.getText()) + Double.parseDouble(tugas2.getText()) + Double.parseDouble(tugas3.getText())) / 3) * (Double.parseDouble(persenTugas.getText()) / 100));
+                Double nilaiuts = (Double.parseDouble(uts.getText()) * (Double.parseDouble(persenUTS.getText()) / 100));
+                Double nilaiuas = (Double.parseDouble(uas.getText()) * (Double.parseDouble(persenUAS.getText()) / 100));
+                Double nilai_akhir = nilaiabsen + nilaitugas + nilaiuts + nilaiuas;
+                String index = "";
+                String ket = "";
+
                 if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
-                        index = "A";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
-                        index = "B";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
-                        index = "C";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
-                        index="D";
-                        ket="Tidak Lulus";
-                    } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
-                        index="E";
-                        ket="Tidak lulus";
-                    }
-                    
-                    if (Integer.parseInt(hadir.getText())<11) {
-                    ket="Tidak Lulus";
+                    index = "A";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
+                    index = "B";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
+                    index = "C";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
+                    index = "D";
+                    ket = "Tidak Lulus";
+                } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
+                    index = "E";
+                    ket = "Tidak lulus";
                 }
-                data[0] = (String)kombo_matkul.getSelectedItem();
+
+                if (Integer.parseInt(hadir.getText()) < 11) {
+                    ket = "Tidak Lulus";
+                }
+                data[0] = (String) kombo_matkul.getSelectedItem();
                 data[1] = persenAbsen.getText();
                 data[2] = persenTugas.getText();
                 data[3] = persenUTS.getText();
@@ -643,16 +705,12 @@ Object tabel;
                 data[16] = index;
                 data[17] = ket;
                 table_model_simulasi_nilai_mhs.insertRow(0, data);
-                
-               
-              
-            }
-            catch(Exception ex)
-            {
-                JOptionPane.showMessageDialog(null, 
-                    ex.getMessage(),"Error",
-                    JOptionPane.INFORMATION_MESSAGE
-                    );
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null,
+                        ex.getMessage(), "Error",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
             }
         }
         plus.setEnabled(true);
@@ -660,60 +718,81 @@ Object tabel;
 
     private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
         // TODO add your handling code here:
-        
+
         table_model_simulasi_nilai_mhs.removeRow(row);
-        String data[]=new String[18];
-        Double nilaiabsen = (((Double.parseDouble(hadir.getText())/14)*100)*(Double.parseDouble(persenAbsen.getText())/100));
-        Double nilaitugas = (((Double.parseDouble(tugas1.getText())+Double.parseDouble(tugas2.getText())+Double.parseDouble(tugas3.getText()))/3)*(Double.parseDouble(persenTugas.getText())/100));
-        Double nilaiuts = (Double.parseDouble(uts.getText())*(Double.parseDouble(persenUTS.getText())/100));
-        Double nilaiuas = (Double.parseDouble(uas.getText())*(Double.parseDouble(persenUAS.getText())/100));
-        Double nilai_akhir = nilaiabsen + nilaitugas + nilaiuts + nilaiuas;
-        String index = "";
-        String ket = "";
-       
-                    
+        String data[] = new String[18];
+
         if ((tempat_kmk.getText().isEmpty()) || (hadir.getText().isEmpty()) || (uts.getText().isEmpty()) || (uas.getText().isEmpty())
-           || (uts.getText().isEmpty()) || (tugas1.getText().isEmpty()) || (tugas2.getText().isEmpty()) || (tugas3.getText().isEmpty())
-           || (persenAbsen.getText().isEmpty()) || (persenTugas.getText().isEmpty()) || (persenUAS.getText().isEmpty()) || (persenUTS.getText().isEmpty())) 
-        {
+                || (tugas1.getText().isEmpty()) || (tugas2.getText().isEmpty()) || (tugas3.getText().isEmpty()) || (persenAbsen.getText().isEmpty())
+                || (persenTugas.getText().isEmpty()) || (persenUTS.getText().isEmpty()) || (persenUAS.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             tempat_kmk.requestFocus();
-        }
-        else if((hadir.getText().isEmpty()))
-        {
+        } else if ((hadir.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             hadir.requestFocus();
-        }
-        else if(Integer.valueOf(hadir.getText())>14){
+        } else if ((uts.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            uts.requestFocus();
+        } else if ((uas.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            uas.requestFocus();
+        } else if ((tugas1.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tugas1.requestFocus();
+        } else if ((tugas2.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tugas2.requestFocus();
+        } else if ((tugas3.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tugas3.requestFocus();
+        } else if ((persenAbsen.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            persenAbsen.requestFocus();
+        } else if ((persenTugas.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            persenTugas.requestFocus();
+        } else if ((persenUTS.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            persenUTS.requestFocus();
+        } else if ((persenUAS.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            persenUAS.requestFocus();
+        } else if (!persenAbsen.getText().matches("[0-9]*")) {
+            JOptionPane.showMessageDialog(null, "Data harus ANGKA!!!");
+        } else if (Integer.valueOf(hadir.getText()) > 14) {
             JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
             hadir.setText("");
             hadir.requestFocus();
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
+                Double nilaiabsen = (((Double.parseDouble(hadir.getText()) / 14) * 100) * (Double.parseDouble(persenAbsen.getText()) / 100));
+                Double nilaitugas = (((Double.parseDouble(tugas1.getText()) + Double.parseDouble(tugas2.getText()) + Double.parseDouble(tugas3.getText())) / 3) * (Double.parseDouble(persenTugas.getText()) / 100));
+                Double nilaiuts = (Double.parseDouble(uts.getText()) * (Double.parseDouble(persenUTS.getText()) / 100));
+                Double nilaiuas = (Double.parseDouble(uas.getText()) * (Double.parseDouble(persenUAS.getText()) / 100));
+                Double nilai_akhir = nilaiabsen + nilaitugas + nilaiuts + nilaiuas;
+                String index = "";
+                String ket = "";
                 if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
-                        index = "A";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
-                        index = "B";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
-                        index = "C";
-                        ket="Lulus";
-                    } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
-                        index="D";
-                        ket="Tidak Lulus";
-                    } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
-                        index="E";
-                        ket="Tidak lulus";
-                    }
-                    
-                    if (Integer.parseInt(hadir.getText())<11) {
-                    ket="Tidak Lulus";
+                    index = "A";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
+                    index = "B";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
+                    index = "C";
+                    ket = "Lulus";
+                } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
+                    index = "D";
+                    ket = "Tidak Lulus";
+                } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
+                    index = "E";
+                    ket = "Tidak lulus";
                 }
-                data[0] = (String)kombo_matkul.getSelectedItem();
+
+                if (Integer.parseInt(hadir.getText()) < 11) {
+                    ket = "Tidak Lulus";
+                }
+                data[0] = (String) kombo_matkul.getSelectedItem();
                 data[1] = persenAbsen.getText();
                 data[2] = persenTugas.getText();
                 data[3] = persenUTS.getText();
@@ -732,16 +811,12 @@ Object tabel;
                 data[16] = index;
                 data[17] = ket;
                 table_model_simulasi_nilai_mhs.insertRow(0, data);
-                
-               
-              
-            }
-            catch(Exception ex)
-            {
-                JOptionPane.showMessageDialog(null, 
-                    ex.getMessage(),"Error",
-                    JOptionPane.INFORMATION_MESSAGE
-                    );
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null,
+                        ex.getMessage(), "Error",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
             }
         }
         plus.setEnabled(true);
@@ -749,7 +824,7 @@ Object tabel;
 
     private void tabel_simulasiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabel_simulasiMouseClicked
         // TODO add your handling code here:
-        if (evt.getClickCount()==1) {
+        if (evt.getClickCount() == 1) {
             tampilkeun();
         }
     }//GEN-LAST:event_tabel_simulasiMouseClicked

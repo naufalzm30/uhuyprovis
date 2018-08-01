@@ -70,7 +70,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         ) // disable perubahan pada grid
         {
             boolean[] canEdit = new boolean[]{
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
             };
             
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -151,6 +151,23 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
             
             System.exit(0);
         }
+    }
+    
+    public void bersihkeun()
+    {
+        kombo_nama.setSelectedIndex(0);
+        kombo_matkul.setSelectedIndex(0);
+        tempat_nim.setText("");
+        tempat_kmk.setText("");
+        tempat_tugas1.setText("");
+        tempat_tugas2.setText("");
+        tempat_tugas3.setText("");
+        tempat_uts.setText("");
+        tempat_uas.setText("");
+        tempat_ang.setText("");
+        tempat_hadir.setText("");
+        tempat_cari.setText("");
+     
     }
     
     int row = 0;
@@ -463,8 +480,18 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         });
 
         cancel.setText("BATAL");
+        cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelActionPerformed(evt);
+            }
+        });
 
         out.setText("KELUAR");
+        out.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                outActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -657,34 +684,45 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         // TODO add your handling code here:
-        String data[] = new String[15];
-        String kode = "";
-        nilai_absen = ((((Integer.valueOf(tempat_hadir.getText()) / 14) * 100) * 5) / 100);
-        nilaiabsen = String.valueOf(nilai_absen);
-        nilai_tugas = (((Integer.valueOf(tempat_tugas1.getText()) + Integer.valueOf(tempat_tugas2.getText()) + Integer.valueOf(tempat_tugas3.getText())) / 3) * 25) / 100;
-        nilaitugas = String.valueOf(nilai_tugas);
-        nilai_uts = (Integer.valueOf(tempat_uts.getText()) * 30) / 100;
-        nilaiuts = String.valueOf(nilai_uts);
-        nilai_uas = (Integer.valueOf(tempat_uas.getText()) * 40) / 100;
-        nilaiuas = String.valueOf(nilai_uas);
-        nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
-        nilaiakhir = String.valueOf(nilai_akhir);
-        
-        if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
-            index = "A";
-            ket = "Lulus";
-        } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
-            index = "B";
-            ket = "Lulus";
-        } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
-            index = "C";
-            ket = "Lulus";
-        } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
-            index = "D";
-            ket = "Tidak Lulus";
-        } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
-            index = "E";
-            ket = "Tidak lulus";
+        String data[]=new String[15];
+        String kode="";
+                nilai_absen = ((((Integer.valueOf(tempat_hadir.getText()) / 14) * 100) * 5) / 100);
+                nilaiabsen = String.valueOf(nilai_absen);
+                nilai_tugas = (((Integer.valueOf(tempat_tugas1.getText()) + Integer.valueOf(tempat_tugas2.getText()) + Integer.valueOf(tempat_tugas3.getText())) / 3) * 25) / 100;
+                nilaitugas = String.valueOf(nilai_tugas);
+                nilai_uts = (Integer.valueOf(tempat_uts.getText()) * 30) / 100;
+                nilaiuts = String.valueOf(nilai_uts);
+                nilai_uas = (Integer.valueOf(tempat_uas.getText()) * 40) / 100;
+                nilaiuas = String.valueOf(nilai_uas);
+                nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
+                nilaiakhir = String.valueOf(nilai_akhir);
+                
+                    if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
+                        index = "A";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
+                        index = "B";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
+                        index = "C";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
+                        index="D";
+                        ket="Tidak Lulus";
+                    } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
+                        index="E";
+                        ket="Tidak lulus";
+                    }
+                    
+                    if (Integer.valueOf(tempat_hadir.getText())<11) {
+                    ket="Tidak Lulus";
+                }
+                
+
+        if ((tempat_nim.getText().isEmpty()) || (tempat_kmk.getText().isEmpty())) 
+        {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_nim.requestFocus();
         }
         
         if (Integer.valueOf(tempat_hadir.getText()) < 11) {
@@ -694,7 +732,14 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         if ((tempat_nim.getText().isEmpty()) || (tempat_kmk.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             tempat_nim.requestFocus();
-        } else {
+         
+        }
+        else if(Integer.valueOf(tempat_hadir.getText())>14){
+            JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
+            tempat_hadir.setText("");
+            tempat_hadir.requestFocus();
+        }
+        else {
             try {
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(
@@ -763,56 +808,68 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         // TODO add your handling code here:
         String data[] = new String[15];
         
-        nilai_absen = ((((Integer.valueOf(tempat_hadir.getText()) / 14) * 100) * 5) / 100);
-        nilaiabsen = String.valueOf(nilai_absen);
-        nilai_tugas = (((Integer.valueOf(tempat_tugas1.getText()) + Integer.valueOf(tempat_tugas2.getText()) + Integer.valueOf(tempat_tugas3.getText())) / 3) * 25) / 100;
-        nilaitugas = String.valueOf(nilai_tugas);
-        nilai_uts = (Integer.valueOf(tempat_uts.getText()) * 30) / 100;
-        nilaiuts = String.valueOf(nilai_uts);
-        nilai_uas = (Integer.valueOf(tempat_uas.getText()) * 40) / 100;
-        nilaiuas = String.valueOf(nilai_uas);
-        nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
-        nilaiakhir = String.valueOf(nilai_akhir);
-        
-        if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
-            index = "A";
-            ket = "Lulus";
-        } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
-            index = "B";
-            ket = "Lulus";
-        } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
-            index = "C";
-            ket = "Lulus";
-        } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
-            index = "D";
-            ket = "Tidak Lulus";
-        } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
-            index = "E";
-            ket = "Tidak lulus";
-        }
-        
-        if (Integer.valueOf(tempat_hadir.getText()) < 11) {
-            ket = "Tidak Lulus";
-        }
-        
-        if ((tempat_nim.getText().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "data tidak boleh kosong, silahkan dilengkapi");
+                nilai_absen = ((((Integer.valueOf(tempat_hadir.getText()) / 14) * 100) * 5) / 100);
+                nilaiabsen = String.valueOf(nilai_absen);
+                nilai_tugas = (((Integer.valueOf(tempat_tugas1.getText()) + Integer.valueOf(tempat_tugas2.getText()) + Integer.valueOf(tempat_tugas3.getText())) / 3) * 25) / 100;
+                nilaitugas = String.valueOf(nilai_tugas);
+                nilai_uts = (Integer.valueOf(tempat_uts.getText()) * 30) / 100;
+                nilaiuts = String.valueOf(nilai_uts);
+                nilai_uas = (Integer.valueOf(tempat_uas.getText()) * 40) / 100;
+                nilaiuas = String.valueOf(nilai_uas);
+                nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
+                nilaiakhir = String.valueOf(nilai_akhir);
+                
+                    
+        if ((tempat_nim.getText().isEmpty()))
+        {
+            JOptionPane.showMessageDialog(null,"data tidak boleh kosong, silahkan dilengkapi");
             tempat_nim.requestFocus();
-        } else {
-            try {
+        }
+        
+        
+        else if(Integer.valueOf(tempat_hadir.getText())>14){
+            JOptionPane.showMessageDialog(null, "Maksimal 14 Pertemuan!");
+            tempat_hadir.setText("");
+            tempat_hadir.requestFocus();
+        }
+        else
+        {
+            try 
+            {
                 Class.forName(driver);
-                Connection kon = DriverManager.getConnection(database, user, pass);
+                Connection kon = DriverManager.getConnection(database,user,pass);
                 Statement stt = kon.createStatement();
                 String SQL = "UPDATE `nilai_ini`"
-                        + "SET `absensi`='" + Integer.valueOf(tempat_hadir.getText()) + "',"
-                        + "`tugas1`='" + Integer.valueOf(tempat_tugas1.getText()) + "',"
-                        + "`tugas2`='" + Integer.valueOf(tempat_tugas2.getText()) + "',"
-                        + "`tugas3`='" + Integer.valueOf(tempat_tugas3.getText()) + "',"
-                        + "`uts`='" + Integer.valueOf(tempat_uts.getText()) + "',"
-                        + "`uas`='" + Integer.valueOf(tempat_uas.getText()) + "' "
-                        + "WHERE "
-                        + "`nama`='" + (String) kombo_nama.getSelectedItem() + "' and `nama_mk`='" + (String) kombo_matkul.getSelectedItem() + "';";
+                        + "SET `absensi`='"+Integer.valueOf(tempat_hadir.getText())+"',"
+                        + "`tugas1`='"+Integer.valueOf(tempat_tugas1.getText())+"',"
+                        + "`tugas2`='"+Integer.valueOf(tempat_tugas2.getText())+"',"
+                        + "`tugas3`='"+Integer.valueOf(tempat_tugas3.getText())+"',"
+                        + "`uts`='"+Integer.valueOf(tempat_uts.getText())+"',"
+                        + "`uas`='"+Integer.valueOf(tempat_uas.getText())+"' "
+                        
+                    + "WHERE "
+                    + "`nama`='"+(String) kombo_nama.getSelectedItem()+"' and `nama_mk`='"+(String) kombo_matkul.getSelectedItem()+"';";
                 
+                if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
+                        index = "A";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
+                        index = "B";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
+                        index = "C";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
+                        index="D";
+                        ket="Tidak Lulus";
+                    } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
+                        index="E";
+                        ket="Tidak lulus";
+                    }
+                    
+                    if (nilai_absen<11) {
+                    ket="Tidak Lulus";
+                }
                 stt.executeUpdate(SQL);
                 
                 data[0] = (String) kombo_nama.getSelectedItem();
@@ -857,8 +914,8 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
             Connection kon = DriverManager.getConnection(database, user, pass);
             Statement stt = kon.createStatement();
             String SQL = "Delete From nilai_ini "
-                    + "WHERE "
-                    + "nim='" + Integer.valueOf(tempat_nim.getText()) + "'";
+                            + "WHERE "
+                          + "nim='"+Integer.valueOf(tempat_nim.getText())+"'";
             stt.executeUpdate(SQL);
             table_model_nilai_mhs.removeRow(row);
             stt.close();
@@ -868,6 +925,22 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
             System.err.println(ex.getMessage());
         }
     }//GEN-LAST:event_deleteActionPerformed
+
+    private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
+        // TODO add your handling code here:
+        add.setEnabled(true);
+        save.setEnabled(true);
+        delete.setEnabled(true);
+        change.setEnabled(true);
+        cancel.setEnabled(true);
+        out.setEnabled(true);
+        bersihkeun();
+    }//GEN-LAST:event_cancelActionPerformed
+
+    private void outActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_outActionPerformed
 
     /**
      * @param args the command line arguments

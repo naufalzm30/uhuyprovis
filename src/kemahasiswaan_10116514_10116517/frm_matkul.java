@@ -193,6 +193,17 @@ public class frm_matkul extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Masukkan Data");
 
+        cari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cariActionPerformed(evt);
+            }
+        });
+        cari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cariKeyReleased(evt);
+            }
+        });
+
         jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -369,7 +380,18 @@ public class frm_matkul extends javax.swing.JFrame {
         } else if ((nomk.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             nomk.requestFocus();
-        } else {
+        } else if (!namk.getText().matches("[0-9a-zA-Z]*")) {
+            JOptionPane.showMessageDialog(null, "Data Tidak Boleh Simbol");
+            namk.setText("");
+            namk.requestFocus();
+        } else if (!nomk.getText().matches("[0-9a-zA-Z]*")){
+            JOptionPane.showMessageDialog(null, "Data Tidak Boleh Simbol");
+            nomk.setText("");
+            nomk.requestFocus();
+        }
+        
+        else
+            {
             try {
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(
@@ -473,6 +495,43 @@ public class frm_matkul extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_outActionPerformed
+
+    private void cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cariActionPerformed
+
+    private void cariKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cariKeyReleased
+        // TODO add your handling code here:
+        table_model_matkul.setRowCount(0);
+        //query untuk cari
+        try 
+        {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database,user,pass);
+            Statement stt = kon.createStatement();
+            String SQL = "SELECT * FROM `mata_kuliah` WHERE nomor_mk like '%"
+                          +cari.getText().toUpperCase()+"%'";
+            ResultSet res = stt.executeQuery(SQL);
+            while (res.next()) 
+            {
+                data[0] = res.getString(1);
+                data[1] = res.getString(2);
+                
+                table_model_matkul.addRow(data);
+            }
+            res.close();
+            stt.close();
+            kon.close();
+        } 
+        catch (Exception ex) 
+        {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, 
+                ex.getMessage(),"Error",
+                JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }//GEN-LAST:event_cariKeyReleased
 
     /**
      * @param args the command line arguments

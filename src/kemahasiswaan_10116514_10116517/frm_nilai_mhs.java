@@ -58,7 +58,7 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         ) // disable perubahan pada grid
         {
             boolean[] canEdit = new boolean[]{
-                false, false
+                false, false,false,false,false,false,false,false,false,false,false,false,false,false,false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -152,7 +152,26 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-
+    
+    int row = 0;
+    public void tampilkeun(){
+        row = tabel_nilai_mhs.getSelectedRow();
+        kombo_nama.setSelectedItem(table_model_nilai_mhs.getValueAt(row, 0).toString());
+        kombo_matkul.setSelectedItem(table_model_nilai_mhs.getValueAt(row, 1).toString());
+        tempat_hadir.setText(table_model_nilai_mhs.getValueAt(row, 2).toString());
+        tempat_tugas1.setText(table_model_nilai_mhs.getValueAt(row, 3).toString());
+        tempat_tugas2.setText(table_model_nilai_mhs.getValueAt(row, 4).toString());
+        tempat_tugas3.setText(table_model_nilai_mhs.getValueAt(row, 5).toString());
+        tempat_uts.setText(table_model_nilai_mhs.getValueAt(row, 6).toString());
+        tempat_uas.setText(table_model_nilai_mhs.getValueAt(row, 7).toString());
+        Date tgl = new Date();
+        SimpleDateFormat date = new SimpleDateFormat("yyyy");
+        tempat_ang.setText(date.format(tgl));
+        save.setEnabled(false);
+        change.setEnabled(true);
+        delete.setEnabled(true);
+        cancel.setEnabled(true);
+    }
     
     private void tampilkombonama() {
         String stat = "";
@@ -406,6 +425,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabel_nilai_mhs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabel_nilai_mhsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabel_nilai_mhs);
 
         add.setText("TAMBAH");
@@ -423,6 +447,11 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
         });
 
         delete.setText("HAPUS");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
 
         save.setText("SIMPAN");
         save.addActionListener(new java.awt.event.ActionListener() {
@@ -595,7 +624,15 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         // TODO add your handling code here:
-        
+        tempat_hadir.requestFocus();
+        save.setEnabled(true);
+        change.setEnabled(false);
+        delete.setEnabled(false);
+        out.setEnabled(false);
+        add.setEnabled(false);
+        Date tgl = new Date();
+        SimpleDateFormat date = new SimpleDateFormat("yyyy");
+        tempat_ang.setText(date.format(tgl));
     }//GEN-LAST:event_addActionPerformed
 
     private void tempat_hadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempat_hadirActionPerformed
@@ -618,21 +655,247 @@ public class frm_nilai_mhs extends javax.swing.JFrame {
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         // TODO add your handling code here:
+        String data[]=new String[15];
+        String kode="";
+        nilai_absen = ((((Integer.valueOf(tempat_hadir.getText()) / 14) * 100) * 5) / 100);
+                nilaiabsen = String.valueOf(nilai_absen);
+                nilai_tugas = (((Integer.valueOf(tempat_tugas1.getText()) + Integer.valueOf(tempat_tugas2.getText()) + Integer.valueOf(tempat_tugas3.getText())) / 3) * 25) / 100;
+                nilaitugas = String.valueOf(nilai_tugas);
+                nilai_uts = (Integer.valueOf(tempat_uts.getText()) * 30) / 100;
+                nilaiuts = String.valueOf(nilai_uts);
+                nilai_uas = (Integer.valueOf(tempat_uas.getText()) * 40) / 100;
+                nilaiuas = String.valueOf(nilai_uas);
+                nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
+                nilaiakhir = String.valueOf(nilai_akhir);
+                
         
+       
+                
+                    if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
+                        index = "A";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
+                        index = "B";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
+                        index = "C";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
+                        index="D";
+                        ket="Tidak Lulus";
+                    } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
+                        index="E";
+                        ket="Tidak lulus";
+                    }
+                    
+                    if (Integer.valueOf(tempat_hadir.getText())<11) {
+                    ket="Tidak Lulus";
+                }
+                
+
+        if ((tempat_nim.getText().isEmpty()) || (tempat_kmk.getText().isEmpty())) 
+        {
+            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
+            tempat_nim.requestFocus();
+        }
+        
+        else
+        {
+            try
+            {
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(
+                                    database,
+                                    user,
+                                    pass);
+                Statement stt = kon.createStatement();
+                String SQL = "INSERT INTO nilai_ini(idnilai_ini,"
+                             + "nama,"
+                        + "nama_mk,"
+                        + "absensi,"
+                        + "tugas1,"
+                        + "tugas2,"
+                        + "tugas3,"
+                        + "uts,"
+                        + "uas,"
+                        + "nim,"
+                        + "nomor_mk,"
+                        + "angkatan)"
+                                + "VALUES "
+                            + "( NULL,"
+                            +  "'"+(String)kombo_nama.getSelectedItem()+"',"
+                            + "'"+(String)kombo_matkul.getSelectedItem()+"',"
+                            + "'"+Integer.valueOf(tempat_hadir.getText())+"',"
+                        + "'"+Integer.valueOf(tempat_tugas1.getText())+"',"
+                        + "'"+Integer.valueOf(tempat_tugas2.getText())+"',"
+                        + "'"+Integer.valueOf(tempat_tugas3.getText())+"',"
+                        + "'"+Integer.valueOf(tempat_uts.getText())+"',"
+                        + "'"+Integer.valueOf(tempat_uas.getText())+"',"
+                        + "'"+Integer.valueOf(tempat_nim.getText())+"',"
+                        + "'"+tempat_kmk.getText()+"',"
+                            + "'"+tempat_ang.getText()+"')";
+                stt.executeUpdate(SQL);
+                
+                data[0] = (String)kombo_nama.getSelectedItem();
+                data[1] = (String)kombo_matkul.getSelectedItem();
+                data[2] = tempat_hadir.getText();
+                data[3] = tempat_tugas1.getText();
+                data[4] = tempat_tugas2.getText();
+                data[5] = tempat_tugas3.getText();
+                data[6] = tempat_uts.getText();
+                data[7] = tempat_uas.getText();
+                data[8] = nilaiabsen;
+                data[9] = nilaitugas;
+                data[10] = nilaiuts;
+                data[11] = nilaiuas;
+                data[12] = nilaiakhir;
+                data[13] = index;
+                data[14] = ket;
+                table_model_nilai_mhs.insertRow(0, data);
+                stt.close();
+                kon.close();
+                
+                save.setEnabled(false);
+                
+            }
+            catch(Exception ex)
+            {
+                JOptionPane.showMessageDialog(null, 
+                    ex.getMessage(),"Error",
+                    JOptionPane.INFORMATION_MESSAGE
+                    );
+            }
+        }
     }//GEN-LAST:event_saveActionPerformed
 
     private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
         // TODO add your handling code here:
-        String kehadiran = tempat_hadir.getText();
+        String absensi = tempat_hadir.getText();
+        int nilai_absensi = Integer.parseInt(absensi);
         String tugas_1 = tempat_tugas1.getText();
+        int nilai_tugas1 = Integer.parseInt(tugas_1);
         String tugas_2 = tempat_tugas2.getText();
+        int nilai_tugas2 = Integer.parseInt(tugas_2);
         String tugas_3 = tempat_tugas3.getText();
+        int nilai_tugas3 = Integer.parseInt(tugas_3);
         String uts = tempat_uts.getText();
+        int nla_uts = Integer.parseInt(uts);
         String uas = tempat_uas.getText();
-        String angkatan = tempat_ang.getText();
+        int nla_uas = Integer.parseInt(uas);
         
-        
+        if ((tempat_nim.getText().isEmpty()))
+        {
+            JOptionPane.showMessageDialog(null,"data tidak boleh kosong, silahkan dilengkapi");
+            tempat_nim.requestFocus();
+        }
+        else
+        {
+            try 
+            {
+                Class.forName(driver);
+                Connection kon = DriverManager.getConnection(database,user,pass);
+                Statement stt = kon.createStatement();
+                String SQL = "UPDATE `nilai_ini`"
+                        + "SET `absensi`='"+nilai_absensi+"',"
+                        + "`tugas1`='"+nilai_tugas1+"',"
+                        + "`tugas2`='"+nilai_tugas2+"',"
+                        + "`tugas3`='"+nilai_tugas3+"',"
+                        + "`uts`='"+nla_uts+"',"
+                        + "`uas`='"+nla_uas+"' "
+                        
+                    + "WHERE "
+                    + "`nim`='"+tempat_nim.getText()+"' and `nomor_mk`='"+tempat_kmk.getText()+"';";
+                stt.executeUpdate(SQL);
+                
+                nilai_absen = ((((nilai_absensi / 14) * 100) * 5) / 100);
+                nilaiabsen = String.valueOf(nilai_absen);
+                nilai_tugas = (((nilai_tugas1 + nilai_tugas2 + nilai_tugas3) / 3) * 25) / 100;
+                nilaitugas = String.valueOf(nilai_tugas);
+                nilai_uts = (nla_uts * 30) / 100;
+                nilaiuts = String.valueOf(nilai_uts);
+                nilai_uas = (nla_uas * 40) / 100;
+                nilaiuas = String.valueOf(nilai_uas);
+                nilai_akhir = nilai_absen + nilai_tugas + nilai_uts + nilai_uas;
+                nilaiakhir = String.valueOf(nilai_akhir);
+                
+                    if ((nilai_akhir >= 80) && (nilai_akhir <= 100)) {
+                        index = "A";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 68) && (nilai_akhir <= 79)) {
+                        index = "B";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 56) && (nilai_akhir <= 67)) {
+                        index = "C";
+                        ket="Lulus";
+                    } else if ((nilai_akhir >= 45) && (nilai_akhir <= 55)) {
+                        index="D";
+                        ket="Tidak Lulus";
+                    } else if ((nilai_akhir >= 0) && (nilai_akhir <= 44)) {
+                        index="E";
+                        ket="Tidak lulus";
+                    }
+                    
+                    if (nilai_absensi<11) {
+                    ket="Tidak Lulus";
+                }
+                
+                data[2] = absensi;
+                data[3] = tugas_1;
+                data[4] = tugas_2;
+                data[5] = tugas_3;
+                data[6] = uts;
+                data[7] = uas;
+                data[8] = nilaiabsen;
+                data[9] = nilaitugas;
+                data[10] = nilaiuts;
+                data[11] = nilaiuas;
+                data[12] = nilaiakhir;
+                data[13] = index;
+                data[14] = ket;
+              
+                
+                table_model_nilai_mhs.removeRow(row);
+                table_model_nilai_mhs.insertRow(row, data);
+                
+                stt.close();
+                kon.close();
+                save.setEnabled(false);
+            } 
+            catch (Exception ex) 
+            {
+                System.err.println(ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_changeActionPerformed
+
+    private void tabel_nilai_mhsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabel_nilai_mhsMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount()==1) {
+            tampilkeun();
+        }
+    }//GEN-LAST:event_tabel_nilai_mhsMouseClicked
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        // TODO add your handling code here:
+        try 
+        {
+            Class.forName(driver);
+            Connection kon = DriverManager.getConnection(database,user,pass);
+            Statement stt = kon.createStatement();
+            String SQL = "Delete From nilai_ini "
+                            + "WHERE "
+                          + "nim='"+tempat_nim.getText()+"'";
+            stt.executeUpdate(SQL);
+            table_model_nilai_mhs.removeRow(row);
+            stt.close();
+            kon.close();
+            
+        } 
+        catch (Exception ex) 
+        {
+            System.err.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_deleteActionPerformed
 
     /**
      * @param args the command line arguments

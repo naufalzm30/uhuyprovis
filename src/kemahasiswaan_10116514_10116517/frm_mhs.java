@@ -103,7 +103,7 @@ Object tabel;
     {
         tempat_nim.setText("");
         tempat_nama.setText("");
-        tempat_tgl.setText("");
+      
         tempat_lahir.setText("");
         tempat_alamat.setText("");
         tempat_cari.setText("");
@@ -113,7 +113,7 @@ Object tabel;
     {
         tempat_nim.setEnabled(false);
         tempat_nama.setEnabled(false);;
-        tempat_tgl.setEnabled(false);
+        
         tempat_lahir.setEnabled(false);
         tempat_alamat.setEnabled(false);
     }
@@ -121,7 +121,7 @@ Object tabel;
     {
         tempat_nim.setEnabled(true);
         tempat_nama.setEnabled(true);
-        tempat_tgl.setEnabled(true);
+     
         tempat_lahir.setEnabled(true);
         tempat_alamat.setEnabled(true);
     }
@@ -133,7 +133,7 @@ Object tabel;
         tempat_nim.setText(tableModel.getValueAt(row, 0).toString());
         tempat_nama.setText(tableModel.getValueAt(row, 1).toString());
         tempat_lahir.setText(tableModel.getValueAt(row, 2).toString());
-        tempat_tgl.setText(tableModel.getValueAt(row, 3).toString());
+        
         tempat_alamat.setText(tableModel.getValueAt(row, 4).toString());
         save.setEnabled(false);
         change.setEnabled(true);
@@ -165,10 +165,8 @@ Object tabel;
         tempat_nim = new javax.swing.JTextField();
         tempat_nama = new javax.swing.JTextField();
         tempat_lahir = new javax.swing.JTextField();
-        tempat_tgl = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabel_mahasiswa = new javax.swing.JTable();
-        jLabel7 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tempat_alamat = new javax.swing.JTextArea();
         jPanel1 = new javax.swing.JPanel();
@@ -178,6 +176,7 @@ Object tabel;
         tempat_cari = new javax.swing.JTextField();
         searching = new javax.swing.JButton();
         display = new javax.swing.JButton();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -252,7 +251,6 @@ Object tabel;
         getContentPane().add(tempat_nim, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 68, -1));
         getContentPane().add(tempat_nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 188, -1));
         getContentPane().add(tempat_lahir, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 230, 188, -1));
-        getContentPane().add(tempat_tgl, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 160, 98, -1));
 
         tabel_mahasiswa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -273,10 +271,6 @@ Object tabel;
         jScrollPane1.setViewportView(tabel_mahasiswa);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 650, 280));
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel7.setText("(yyyy-mm-dd)");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 160, -1, -1));
 
         tempat_alamat.setColumns(20);
         tempat_alamat.setRows(5);
@@ -340,6 +334,7 @@ Object tabel;
         );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 680, 80));
+        getContentPane().add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 160, 130, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -360,20 +355,21 @@ Object tabel;
         // TODO add your handling code here:
         String data[]=new String[5];
         
-        if ((tempat_nim.getText().isEmpty()) || (tempat_tgl.getText().isEmpty())) 
+        if ((tempat_nim.getText().isEmpty())) 
         {
             JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
             tempat_nim.requestFocus();
         }
-        else if((tempat_tgl.getText().isEmpty()))
-        {
-            JOptionPane.showMessageDialog(null, "Data tidak boleh kosong,silahkan dilengkapi");
-            tempat_tgl.requestFocus();
-        }
+        
         else
         {
             try
             {
+                
+                SimpleDateFormat tanggal = new SimpleDateFormat("yyy-MM-dd");
+                String date = tanggal.format(jDateChooser1.getDate());
+                
+                
                 Class.forName(driver);
                 Connection kon = DriverManager.getConnection(
                                     database,
@@ -389,13 +385,13 @@ Object tabel;
                             + "( '"+tempat_nim.getText()+"',"
                             +  "'"+tempat_nama.getText()+"',"
                             + "'"+tempat_lahir.getText()+"',"
-                            + "'"+tempat_tgl.getText()+"',"
+                            + "'"+date+"',"
                             + "'"+tempat_alamat.getText()+"')";
                 stt.executeUpdate(SQL);
                 data[0] = tempat_nim.getText();
                 data[1] = tempat_nama.getText();
                 data[2] = tempat_lahir.getText();
-                data[3] = tempat_tgl.getText();
+                data[3] = date;
                 data[4] = tempat_alamat.getText();
                 tableModel.insertRow(0, data);
                 stt.close();
@@ -424,10 +420,12 @@ Object tabel;
 
     private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
         // TODO add your handling code here:
+        SimpleDateFormat tanggal = new SimpleDateFormat("yyy-MM-dd");
+                String date = tanggal.format(jDateChooser1.getDate());
         String nim=tempat_nim.getText();
         String nama=tempat_nama.getText();
         String tempat_lahiir = tempat_lahir.getText();
-        String tanggal_lahir=tempat_tgl.getText();
+        
         String alamat=tempat_alamat.getText();
         
         if ((nim.isEmpty()) | (alamat.isEmpty()))
@@ -446,7 +444,7 @@ Object tabel;
                         + "SET `nim`='"+nim+"',"
                         + "`nama`='"+nama+"',"
                         + "`tempat_lahir`='"+tempat_lahiir+"',"
-                        + "`tgl_lahir`='"+tanggal_lahir+"',"
+                        + "`tgl_lahir`='"+date+"',"
                         + "`alamat`='"+alamat+"' "
                     + "WHERE "
                     + "`nim`='"+tableModel.getValueAt(row, 0).toString()+"';";
@@ -454,7 +452,7 @@ Object tabel;
                 data[0] = nim;
                 data[1] = nama;
                 data[2] = tempat_lahiir;
-                data[3] = tanggal_lahir;
+                data[3] = date;
                 data[4] = alamat;
                 tableModel.removeRow(row);
                 tableModel.insertRow(row, data);
@@ -594,13 +592,13 @@ Object tabel;
     private javax.swing.JButton change;
     private javax.swing.JButton delete;
     private javax.swing.JButton display;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -615,6 +613,5 @@ Object tabel;
     private javax.swing.JTextField tempat_lahir;
     private javax.swing.JTextField tempat_nama;
     private javax.swing.JTextField tempat_nim;
-    private javax.swing.JTextField tempat_tgl;
     // End of variables declaration//GEN-END:variables
 }
